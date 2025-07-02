@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des Abonnements</title>
+</head>
+
+<body>
+    <h1>Liste des Abonnements</h1>
+
+    <a th:href="@{/abonnements/create}">Ajouter un abonnement</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="abo : ${abonnements}">
+                <td th:text="${abo.id_abonnement}">ID</td>
+                <td th:text="${abo.user.nom}">Nom utilisateur</td>
+                <td th:text="${abo.date_debut}">Date début</td>
+                <td th:text="${abo.date_fin}">Date fin</td>
+                <td>
+                    <a th:href="@{'/abonnements/edit/' + ${abo.id_abonnement}}">Modifier</a> |
+                    <a th:href="@{'/abonnements/delete/' + ${abo.id_abonnement}}"
+                        onclick="return confirm('Supprimer cet abonnement ?')">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

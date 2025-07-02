@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Mes prêts</title>
+</head>
+
+<body>
+    <h1>Mes prêts</h1>
+
+    <form method="get" th:action="@{/membre/prets}">
+        <input type="text" name="search" placeholder="Titre du livre">
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Livre</th>
+            <th>Nombre</th>
+            <th>Date</th>
+            <th>Sur place</th>
+        </tr>
+        <tr th:each="pret : ${prets}">
+            <td th:text="${pret.livre.titre}"></td>
+            <td th:text="${pret.nbr}"></td>
+            <td th:text="${pret.datePret}"></td>
+            <td th:text="${pret.isSurPlace ? 'Oui' : 'Non'}"></td>
+        </tr>
+    </table>
+</body>
+
+</html>

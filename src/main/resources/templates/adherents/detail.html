@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail de l’Adhérent</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <h1>Détail de l’Adhérent</h1>
+
+    <p><strong>ID :</strong> <span th:text="${adherent.id}">1</span></p>
+    <p><strong>Nom :</strong> <span th:text="${adherent.nom}">Nom</span></p>
+    <p><strong>Quota :</strong>
+        <span th:text="${adherent.quota != null ? adherent.quota.description : 'Aucun'}">Quota</span>
+    </p>
+
+    <a th:href="@{/adherents}">Retour à la liste</a>
+</body>
+
+</html>

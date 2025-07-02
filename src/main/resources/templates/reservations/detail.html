@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détails de la réservation</title>
+</head>
+
+<body>
+    <h1>Détails de la réservation</h1>
+
+    <p><strong>ID Réservation :</strong> <span th:text="${reservation.id_reservation}"></span></p>
+    <p><strong>Utilisateur :</strong> <span th:text="${reservation.user.nom}"></span></p>
+    <p><strong>Livre :</strong> <span th:text="${reservation.livre.titre}"></span></p>
+    <p><strong>Nombre :</strong> <span th:text="${reservation.nbr}"></span></p>
+    <p><strong>Sur place :</strong> <span th:text="${reservation.isSurPlace ? 'Oui' : 'Non'}"></span></p>
+
+    <br />
+    <a th:href="@{/reservations}">Retour à la liste</a>
+</body>
+
+</html>

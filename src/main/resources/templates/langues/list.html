@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des Langues</title>
+</head>
+
+<body>
+    <h1>Langues</h1>
+
+    <a th:href="@{/langues/create}">Créer une langue</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="langue : ${langues}">
+                <td th:text="${langue.id}"></td>
+                <td>
+                    <a th:href="@{'/langues/' + ${langue.id}}" th:text="${langue.nom}"></a>
+                </td>
+                <td>
+                    <a th:href="@{'/langues/edit/' + ${langue.id}}">Modifier</a>
+                    <form th:action="@{'/langues/delete/' + ${langue.id}}" method="post" style="display:inline">
+                        <button type="submit" onclick="return confirm('Supprimer cette langue ?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

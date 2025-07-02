@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un utilisateur</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <h1>Créer un utilisateur</h1>
+
+    <form th:action="@{/users/create}" th:object="${user}" method="post">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required /><br /><br />
+
+        <label>Prénom :</label>
+        <input type="text" th:field="*{prenom}" required /><br /><br />
+
+        <label>Email :</label>
+        <input type="email" th:field="*{email}" required /><br /><br />
+
+        <label>Mot de passe :</label>
+        <input type="password" th:field="*{password}" required /><br /><br />
+
+        <label>Contact :</label>
+        <input type="text" th:field="*{contact}" /><br /><br />
+
+        <label>Date d'adhésion :</label>
+        <input type="date" th:field="*{dateAdhesion}" /><br /><br />
+
+        <label>Date de naissance :</label>
+        <input type="date" th:field="*{date_naissance}" />
+        <br>
+
+        <!-- Si tu veux choisir un Adherent existant -->
+        <label>Adhérent :</label>
+        <select th:field="*{adherent}">
+            <option th:each="a : ${adherents}" th:value="${a.id}" th:text="${a.nom}"></option>
+        </select>
+
+        <button type="submit">Créer</button>
+    </form>
+
+</body>
+
+</html>

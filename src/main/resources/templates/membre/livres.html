@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Livres disponibles</title>
+</head>
+
+<body>
+    <h1>Liste des livres</h1>
+
+    <form method="get" th:action="@{/membre/livres}">
+        <input type="text" name="search" placeholder="Rechercher par titre">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="livre : ${livres}">
+            <td th:text="${livre.titre}"></td>
+            <td th:text="${livre.auteur}"></td>
+            <td>
+                <form th:action="@{/membre/livres/reserver}" method="get">
+                    <input type="hidden" name="id" th:value="${livre.id}">
+                    <button type="submit">Réserver</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

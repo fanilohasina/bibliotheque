@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des prêts</title>
+</head>
+
+<body>
+    <h1>Liste des prêts</h1>
+
+    <a th:href="@{/prets/create}">Créer un nouveau prêt</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Livre</th>
+                <th>Nombre</th>
+                <th>Sur place</th>
+                <th>Date du prêt</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pret : ${prets}">
+                <td th:text="${pret.id_pret}"></td>
+                <td th:text="${pret.user.nom}"></td>
+                <td th:text="${pret.livre.titre}"></td>
+                <td th:text="${pret.nbr}"></td>
+                <td th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></td>
+                <td th:text="${pret.datePret}"></td>
+                <td>
+                    <a th:href="@{/prets/detail/{id}(id=${pret.id_pret})}">Détails</a> |
+                    <a th:href="@{/prets/edit/{id}(id=${pret.id_pret})}">Modifier</a> |
+                    <a th:href="@{/prets/delete/{id}(id=${pret.id_pret})}"
+                        onclick="return confirm('Supprimer ce prêt ?');">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

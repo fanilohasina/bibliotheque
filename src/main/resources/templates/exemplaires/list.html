@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des exemplaires</title>
+</head>
+
+<body>
+    <h1>Liste des exemplaires</h1>
+    <a th:href="@{/exemplaires/create}">Ajouter un exemplaire</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Livre</th>
+                <th>Date action</th>
+                <th>Action</th>
+                <th>Nombre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ex : ${exemplaires}">
+                <td th:text="${ex.id_exemplaire}"></td>
+                <td th:text="${ex.livre.titre}"></td>
+                <td th:text="${ex.dateAction}"></td>
+                <td th:text="${ex.action} ? 'Ajout' : 'Retrait'"></td>
+                <td th:text="${ex.nbr}"></td>
+                <td>
+                    <a th:href="@{'/exemplaires/' + ${ex.id_exemplaire}}">Détail</a>
+                    <a th:href="@{'/exemplaires/edit/' + ${ex.id_exemplaire}}">Modifier</a>
+                    <a th:href="@{'/exemplaires/delete/' + ${ex.id_exemplaire}}">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

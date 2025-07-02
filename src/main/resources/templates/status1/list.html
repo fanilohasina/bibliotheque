@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des statuts</title>
+</head>
+
+<body>
+    <h1>Liste des statuts</h1>
+
+    <a th:href="@{/status1/create}">Ajouter un statut</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${statusList}">
+                <td th:text="${s.id_status1}"></td>
+                <td th:text="${s.nom}"></td>
+                <td>
+                    <a th:href="@{'/status1/' + ${s.id_status1}}">Détail</a> |
+                    <a th:href="@{'/status1/edit/' + ${s.id_status1}}">Modifier</a> |
+                    <a th:href="@{'/status1/delete/' + ${s.id_status1}}"
+                        onclick="return confirm('Confirmer la suppression ?')">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

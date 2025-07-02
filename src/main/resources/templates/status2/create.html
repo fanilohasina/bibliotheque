@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ajouter un statut</title>
+</head>
+
+<body>
+    <h1>Ajouter un statut</h1>
+    <form th:action="@{/status2/create}" th:object="${status2}" method="post">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required />
+        <br>
+        <button type="submit">Enregistrer</button>
+    </form>
+    <a th:href="@{/status2}">Retour à la liste</a>
+</body>
+
+</html>

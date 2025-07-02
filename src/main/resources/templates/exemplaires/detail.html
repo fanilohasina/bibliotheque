@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail de l'exemplaire</title>
+</head>
+
+<body>
+    <h1>Détail de l'exemplaire</h1>
+    <p><strong>ID :</strong> <span th:text="${exemplaire.id_exemplaire}"></span></p>
+    <p><strong>Livre :</strong> <span th:text="${exemplaire.livre.titre}"></span></p>
+    <p><strong>Date Action :</strong> <span th:text="${exemplaire.dateAction}"></span></p>
+    <p><strong>Action :</strong> <span th:text="${exemplaire.action} ? 'Ajout' : 'Retrait'"></span></p>
+    <p><strong>Nombre :</strong> <span th:text="${exemplaire.nbr}"></span></p>
+    <a th:href="@{/exemplaires}">Retour à la liste</a>
+</body>
+
+</html>

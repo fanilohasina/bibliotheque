@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des Réservations</title>
+</head>
+
+<body>
+    <h1>Liste des Réservations</h1>
+
+    <a th:href="@{/reservations/create}">Créer une nouvelle réservation</a>
+
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Livre</th>
+                <th>Nombre</th>
+                <th>Sur place</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${reservations}">
+                <td th:text="${r.id_reservation}">1</td>
+                <td th:text="${r.user.nom}">Utilisateur</td>
+                <td th:text="${r.livre.titre}">Livre</td>
+                <td th:text="${r.nbr}">0</td>
+                <td th:text="${r.isSurPlace ? 'Oui' : 'Non'}">Non</td>
+                <td>
+                    <a th:href="@{'/reservations/details/' + ${r.id_reservation}}">Détails</a> |
+                    <a th:href="@{'/reservations/edit/' + ${r.id_reservation}}">Modifier</a> |
+                    <a th:href="@{'/reservations/delete/' + ${r.id_reservation}}"
+                        onclick="return confirm('Supprimer cette réservation ?');">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

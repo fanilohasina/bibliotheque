@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer StatusPret</title>
+</head>
+
+<body>
+    <h1>Créer un StatusPret</h1>
+    <form th:action="@{/statusprets/create}" method="post" th:object="${statusPret}">
+        <label for="idPret">Prêt :</label>
+        <select id="idPret" name="idPret" required>
+            <option th:each="pret : ${prets}" th:value="${pret.id_pret}"
+                th:text="${pret.id_pret} + ' - ' + ${pret.user.nom}"></option>
+        </select>
+        <br />
+
+        <label for="idStatus1">Status :</label>
+        <select id="idStatus1" name="idStatus1" required>
+            <option th:each="status1 : ${status1s}" th:value="${status1.id_status1}" th:text="${status1.nom}"></option>
+        </select>
+        <br />
+
+        <label for="dateAction">Date Action :</label>
+        <input type="date" id="dateAction" name="dateAction" th:value="*{dateAction}" required />
+        <br />
+
+        <button type="submit">Créer</button>
+    </form>
+    <a th:href="@{/statusprets}">Retour à la liste</a>
+</body>
+
+</html>

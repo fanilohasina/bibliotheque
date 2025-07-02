@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Réserver un livre</title>
+</head>
+
+<body>
+    <h1>Réservation</h1>
+
+    <form th:action="@{/membre/livres/reserver}" method="post">
+        <input type="hidden" name="id" th:value="${livre.id}">
+        <p>Titre : <span th:text="${livre.titre}"></span></p>
+        <label>Nombre d'exemplaires :</label>
+        <input type="number" name="nbr" required min="1">
+        <label>Sur place :</label>
+        <select name="isSurPlace">
+            <option value="false">Non</option>
+            <option value="true">Oui</option>
+        </select>
+        <button type="submit">Confirmer</button>
+    </form>
+</body>
+
+</html>

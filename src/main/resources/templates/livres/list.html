@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des Livres</title>
+</head>
+
+<body>
+    <h1>Liste des Livres</h1>
+
+    <a th:href="@{/livres/create}">Ajouter un livre</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Date de publication</th>
+                <th>Date d'entrée</th>
+                <th>Auteur</th>
+                <th>Langue</th>
+                <th>Catégories</th>
+                <th>Categorie age</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="livre : ${livres}">
+                <td th:text="${livre.id}">1</td>
+                <td th:text="${livre.titre}">Titre</td>
+                <td th:text="${livre.dateDePublication}">2025-01-01</td>
+                <td th:text="${livre.dateDentree}">2025-02-01</td>
+                <td th:text="${livre.auteur.nom}">Auteur</td>
+                <td th:text="${livre.langue.nom}">Langue</td>
+                <td th:text="${livre.categorieAge}">Langue</td>
+                <td>
+                    <span th:if="${#lists.isEmpty(livre.categories)}">N/A</span>
+                    <span th:if="${!#lists.isEmpty(livre.categories)}">
+                        <span th:each="cat, iterStat : ${livre.categories}"
+                            th:text="${cat.nom} + (iterStat.last ? '' : ', ')">
+                        </span>
+                    </span>
+                </td>
+
+                <td>
+                    <a th:href="@{'/livres/' + ${livre.id}}">Voir</a> |
+                    <a th:href="@{'/livres/edit/' + ${livre.id}}">Modifier</a> |
+                    <a th:href="@{'/livres/delete/' + ${livre.id}}"
+                        onclick="return confirm('Supprimer ce livre ?');">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

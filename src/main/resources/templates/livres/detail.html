@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail du Livre</title>
+</head>
+
+<body>
+    <h1>Détail du Livre</h1>
+
+    <p><strong>ID :</strong> <span th:text="${livre.id}"></span></p>
+    <p><strong>Titre :</strong> <span th:text="${livre.titre}"></span></p>
+    <p><strong>Date de publication :</strong> <span th:text="${livre.dateDePublication}"></span></p>
+    <p><strong>Date d'entrée :</strong> <span th:text="${livre.dateDentree}"></span></p>
+    <p><strong>Auteur :</strong> <span th:text="${livre.auteur.nom}"></span></p>
+    <p><strong>Langue :</strong> <span th:text="${livre.langue.nom}"></span></p>
+    <p><strong>Catégories :</strong>
+        <span th:if="${#lists.isEmpty(livre.categories)}">Aucune</span>
+        <span th:if="${!#lists.isEmpty(livre.categories)}"
+            th:text="${#strings.listJoin(livre.categories.^![nom], ', ')}">
+        </span>
+    </p>
+
+    <a th:href="@{/livres}">Retour à la liste</a>
+</body>
+
+</html>

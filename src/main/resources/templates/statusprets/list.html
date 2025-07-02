@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste StatusPret</title>
+</head>
+
+<body>
+    <h1>Liste des StatusPret</h1>
+    <a th:href="@{/statusprets/create}">Créer un nouveau statusPret</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Prêt</th>
+                <th>Status</th>
+                <th>Date Action</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sp : ${statusprets}">
+                <td th:text="${sp.id_status_pret}"></td>
+                <td th:text="${sp.pret.id_pret}"></td>
+                <td th:text="${sp.status1.nom}"></td>
+                <td th:text="${sp.dateAction}"></td>
+                <td>
+                    <a th:href="@{'/statusprets/details/' + ${sp.id_status_pret}}">Détails</a> |
+                    <a th:href="@{'/statusprets/edit/' + ${sp.id_status_pret}}">Modifier</a> |
+                    <a th:href="@{'/statusprets/delete/' + ${sp.id_status_pret}}"
+                        onclick="return confirm('Supprimer ce statusPret ?');">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

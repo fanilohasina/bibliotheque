@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Liste des auteurs</title>
+</head>
+
+<body>
+    <h1>Liste des auteurs</h1>
+
+    <a href="/auteurs/create">➕ Ajouter un auteur</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Nationalité</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="auteur : ${auteurs}">
+                <td th:text="${auteur.id}"></td>
+                <td th:text="${auteur.nom}"></td>
+                <td th:text="${auteur.nationalite}"></td>
+                <td>
+                    <a th:href="@{'/auteurs/' + ${auteur.id}}">👁 Voir</a> |
+                    <a th:href="@{'/auteurs/edit/' + ${auteur.id}}">✏️ Modifier</a> |
+                    <form th:action="@{'/auteurs/delete/' + ${auteur.id}}" method="post" style="display:inline">
+                        <button type="submit" onclick="return confirm('Supprimer ?')">🗑 Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

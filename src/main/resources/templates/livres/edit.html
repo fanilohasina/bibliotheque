@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier un Livre</title>
+</head>
+
+<body>
+    <h1>Modifier un Livre</h1>
+
+    <form th:action="@{'/livres/edit/' + ${livre.id}}" th:object="${livre}" method="post">
+
+        <label>Titre :</label>
+        <input type="text" th:field="*{titre}" required /><br /><br />
+
+        <label>Date de publication :</label>
+        <input type="date" th:field="*{dateDePublication}" required /><br /><br />
+
+        <label>Date d'entrée :</label>
+        <input type="date" th:field="*{dateDentree}" required /><br /><br />
+
+        <label>Categorie Age:</label>
+        <input type="number" th:field="*{categorieAge}" required /><br />
+
+        <label>Auteur :</label>
+        <select th:field="*{auteur}" required>
+            <option th:each="a : ${auteurs}" th:value="${a}" th:text="${a.nom}" th:selected="${a.equals(livre.auteur)}">
+            </option>
+        </select><br /><br />
+
+        <label>Langue :</label>
+        <select th:field="*{langue}" required>
+            <option th:each="l : ${langues}" th:value="${l}" th:text="${l.nom}" th:selected="${l.equals(livre.langue)}">
+            </option>
+        </select><br /><br />
+
+        <label>Catégories :</label><br />
+        <div th:each="cat : ${categories}">
+            <input type="checkbox" th:field="*{categories}" th:value="${cat.id}" />
+            <span th:text="${cat.nom}"></span><br />
+        </div>
+
+        <br />
+        <button type="submit">Enregistrer les modifications</button>
+        <a th:href="@{/livres}">Annuler</a>
+    </form>
+</body>
+
+</html>

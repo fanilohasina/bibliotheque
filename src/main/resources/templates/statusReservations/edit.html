@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Éditer StatusReservation</title>
+</head>
+
+<body>
+    <h1>Éditer StatusReservation</h1>
+
+    <form th:action="@{'/statusReservations/edit/' + ${statusReservation.id_status_pret}}"
+        th:object="${statusReservation}" method="post">
+
+        <label for="reservation">Réservation :</label>
+        <select id="reservation" name="reservation.id_reservation" required>
+            <option value="" disabled>-- Choisir une réservation --</option>
+            <option th:each="res : ${reservations}" th:value="${res.id_reservation}" th:text="${res.id_reservation}"
+                th:selected="${res.id_reservation} == ${statusReservation.reservation.id_reservation}"></option>
+        </select>
+        <br />
+
+        <label for="status2">Status :</label>
+        <select id="status2" name="status2.id_status2" required>
+            <option value="" disabled>-- Choisir un status --</option>
+            <option th:each="stat : ${statuses}" th:value="${stat.id_status2}" th:text="${stat.nom}"
+                th:selected="${stat.id_status2} == ${statusReservation.status2.id_status2}"></option>
+        </select>
+        <br />
+
+        <label for="dateAction">Date Action :</label>
+        <input type="date" id="dateAction" th:field="*{dateAction}" required />
+        <br />
+
+        <button type="submit">Sauvegarder</button>
+    </form>
+
+    <a th:href="@{/statusReservations}">Retour à la liste</a>
+</body>
+
+</html>

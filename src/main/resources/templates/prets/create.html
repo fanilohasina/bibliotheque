@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un prêt</title>
+</head>
+
+<body>
+    <h1>Créer un prêt</h1>
+    <form th:action="@{/prets/create}" th:object="${pret}" method="post">
+        <label>Utilisateur :</label>
+        <select name="userId" required>
+            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
+                th:selected="${pret.user != null and u.id == pret.user.id}">
+            </option>
+        </select>
+        <br />
+
+        <label>Livre :</label>
+        <select name="livreId" required>
+            <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
+                th:selected="${pret.livre != null and l.id == pret.livre.id}">
+            </option>
+        </select>
+        <br />
+
+        <label>Nombre :</label>
+        <input type="number" th:field="*{nbr}" min="1" required />
+        <br />
+
+        <label>Sur place :</label>
+        <input type="checkbox" th:field="*{isSurPlace}" />
+        <br />
+
+        <label>Date du prêt :</label>
+        <input type="date" th:field="*{datePret}" required />
+        <br />
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <a th:href="@{/prets}">Retour à la liste</a>
+</body>
+
+</html>

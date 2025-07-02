@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier un exemplaire</title>
+</head>
+
+<body>
+    <h1>Modifier un exemplaire</h1>
+    <form th:action="@{/exemplaires/edit/{id}(id=${exemplaire.id_exemplaire})}" th:object="${exemplaire}" method="post">
+        <!-- Champ livre -->
+        <label for="livre">Livre :</label>
+        <select th:field="*{livre}" required>
+            <option th:each="livre : ${livres}" th:value="${livre.id}" th:text="${livre.titre}">
+            </option>
+        </select>
+
+        <!-- Autres champs -->
+        <label for="dateAction">Date d'action :</label>
+        <input type="date" th:field="*{dateAction}" required />
+
+        <label for="action">Action :</label>
+        <select th:field="*{action}" required>
+            <option th:value="true">Ajout</option>
+            <option th:value="false">Retrait</option>
+        </select>
+
+        <label for="nbr">Nombre :</label>
+        <input type="number" th:field="*{nbr}" required />
+
+        <button type="submit">Modifier</button>
+    </form>
+
+    <a th:href="@{/exemplaires}">Retour</a>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail du statut</title>
+</head>
+
+<body>
+    <h1>Détail du statut</h1>
+    <p><strong>ID :</strong> <span th:text="${status2.id_status2}">1</span></p>
+    <p><strong>Nom :</strong> <span th:text="${status2.nom}">Exemple</span></p>
+
+    <a th:href="@{/status2}">Retour à la liste</a>
+</body>
+
+</html>

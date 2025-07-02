@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un Adhérent</title>
+</head>
+
+<body>
+    <h1>Créer un nouvel Adhérent</h1>
+
+    <form th:action="@{/adherents/create}" method="post" th:object="${adherent}">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required /><br><br>
+
+        <label>Quota :</label>
+        <select name="quotaId" required>
+            <option value="">-- Sélectionner un quota --</option>
+            <option th:each="q : ${quotas}" th:value="${q.id_quota}"
+                th:text="'Max Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
+            </option>
+        </select><br><br>
+
+        <button type="submit">Créer</button>
+    </form>
+
+    <br>
+    <a th:href="@{/adherents}">← Retour à la liste</a>
+</body>
+
+</html>

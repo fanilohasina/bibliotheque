@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détails StatusReservation</title>
+</head>
+
+<body>
+    <h1>Détails StatusReservation</h1>
+
+    <p><strong>ID :</strong> <span th:text="${statusReservation.id_status_pret}"></span></p>
+    <p><strong>Réservation ID :</strong> <span th:text="${statusReservation.reservation.id_reservation}"></span></p>
+    <p><strong>Status :</strong> <span th:text="${statusReservation.status2.nom}"></span></p>
+    <p><strong>Date Action :</strong> <span th:text="${statusReservation.dateAction}"></span></p>
+
+    <a th:href="@{/statusReservations}">Retour à la liste</a>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un auteur</title>
+</head>
+
+<body>
+    <h1>Créer un nouvel auteur</h1>
+
+    <form th:action="@{/auteurs/create}" th:object="${auteur}" method="post">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required /><br />
+
+        <label>Biographie :</label><br />
+        <textarea th:field="*{biographie}" rows="4" cols="50"></textarea><br />
+
+        <label>Nationalité :</label>
+        <input type="text" th:field="*{nationalite}" required /><br />
+
+        <button type="submit">Créer</button>
+    </form>
+
+    <a href="/auteurs">Retour à la liste</a>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Mes pénalités</title>
+</head>
+
+<body>
+    <h1>Mes pénalités</h1>
+
+    <form method="get" th:action="@{/membre/penalites}">
+        <input type="text" name="search" placeholder="Mot-clé">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Motif</th>
+            <th>Montant</th>
+            <th>Date</th>
+        </tr>
+        <tr th:each="p : ${penalites}">
+            <td th:text="${p.motif}"></td>
+            <td th:text="${p.montant} + ' Ar'"></td>
+            <td th:text="${p.date}"></td>
+        </tr>
+    </table>
+</body>
+
+</html>

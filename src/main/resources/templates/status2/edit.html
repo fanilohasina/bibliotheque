@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier le statut</title>
+</head>
+
+<body>
+    <h1>Modifier le statut</h1>
+    <form th:action="@{'/status2/edit/' + ${status2.id_status2}}" th:object="${status2}" method="post">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required />
+        <br>
+        <button type="submit">Mettre à jour</button>
+    </form>
+    <a th:href="@{/status2}">Retour à la liste</a>
+</body>
+
+</html>

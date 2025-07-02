@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier la réservation</title>
+</head>
+
+<body>
+    <h1>Modifier la réservation</h1>
+
+    <form th:action="@{'/reservations/edit/' + ${reservation.id_reservation}}" method="post" th:object="${reservation}">
+        <label for="user">Utilisateur :</label>
+        <select name="userId" id="user" required>
+            <option value="" disabled>-- Choisir un utilisateur --</option>
+            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
+                th:selected="${u.id == reservation.user.id}">
+            </option>
+        </select>
+        <br /><br />
+
+        <label for="livre">Livre :</label>
+        <select name="livreId" id="livre" required>
+            <option value="" disabled>-- Choisir un livre --</option>
+            <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
+                th:selected="${l.id == reservation.livre.id}">
+            </option>
+        </select>
+        <br /><br />
+
+        <label for="nbr">Nombre :</label>
+        <input type="number" id="nbr" name="nbr" th:value="${reservation.nbr}" min="1" required />
+        <br /><br />
+
+        <label for="isSurPlace">Sur place :</label>
+        <input type="checkbox" id="isSurPlace" name="isSurPlace" th:checked="${reservation.isSurPlace}" />
+        <br /><br />
+
+        <button type="submit">Modifier</button>
+    </form>
+
+    <br />
+    <a th:href="@{/reservations}">Retour à la liste</a>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail de l'auteur</title>
+</head>
+
+<body>
+    <h1>Détail de l'auteur</h1>
+
+    <p><strong>Nom :</strong> <span th:text="${auteur.nom}"></span></p>
+    <p><strong>Biographie :</strong> <span th:text="${auteur.biographie}"></span></p>
+    <p><strong>Nationalité :</strong> <span th:text="${auteur.nationalite}"></span></p>
+
+    <a href="/auteurs">⬅ Retour à la liste</a> |
+    <a th:href="@{'/auteurs/edit/' + ${auteur.id}}">✏️ Modifier</a>
+</body>
+
+</html>

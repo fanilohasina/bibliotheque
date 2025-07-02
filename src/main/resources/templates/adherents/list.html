@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+   <title>Liste des Adhérents</title>
+   <meta charset="UTF-8" />
+</head>
+
+<body>
+   <h1>Liste des Adhérents</h1>
+
+   <a th:href="@{/adherents/create}">Créer un nouvel adhérent</a>
+
+   <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+         <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Quota</th>
+            <th>Actions</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr th:each="a : ${adherents}">
+            <td th:text="${a.id}">1</td>
+            <td th:text="${a.nom}">Nom</td>
+            <td th:text="${a.quota != null ? a.quota.description : 'Aucun'}">Quota</td>
+            <td>
+               <a th:href="@{'/adherents/detail/' + ${a.id}}">Détail</a> |
+               <a th:href="@{'/adherents/edit/' + ${a.id}}">Modifier</a> |
+               <a th:href="@{'/adherents/delete/' + ${a.id}}"
+                  onclick="return confirm('Supprimer cet adhérent ?');">Supprimer</a>
+            </td>
+         </tr>
+         <tr th:if="${#lists.isEmpty(adherents)}">
+            <td colspan="4">Aucun adhérent trouvé.</td>
+         </tr>
+      </tbody>
+   </table>
+</body>
+
+</html>

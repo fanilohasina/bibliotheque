@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détails de la langue</title>
+</head>
+
+<body>
+
+    <h1>Détails de la langue</h1>
+
+    <p><strong>ID :</strong> <span th:text="${langue.id}"></span></p>
+    <p><strong>Nom :</strong> <span th:text="${langue.nom}"></span></p>
+
+    <a th:href="@{/langues}">Retour à la liste</a>
+    <a th:href="@{'/langues/edit/' + ${langue.id}}">Modifier</a>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un Livre</title>
+</head>
+
+<body>
+    <h1>Créer un Livre</h1>
+
+    <form th:action="@{/livres/create}" th:object="${livre}" method="post">
+        <label>Titre:</label>
+        <input type="text" th:field="*{titre}" required /><br />
+
+        <label>Date de publication:</label>
+        <input type="date" th:field="*{dateDePublication}" required /><br />
+
+        <label>Date d'entrée:</label>
+        <input type="date" th:field="*{dateDentree}" required /><br />
+
+        <label>Categorie Age:</label>
+        <input type="number" th:field="*{categorieAge}" required /><br />
+
+        <label>Auteur:</label>
+        <select th:field="*{auteur}" required>
+            <option th:each="a : ${auteurs}" th:value="${a.id}" th:text="${a.nom}"></option>
+        </select><br />
+
+        <label>Langue:</label>
+        <select th:field="*{langue}" required>
+            <option th:each="l : ${langues}" th:value="${l.id}" th:text="${l.nom}"></option>
+        </select><br />
+
+        <label>Catégories:</label><br />
+        <div th:each="cat : ${categories}">
+            <input type="checkbox" th:field="*{categories}" th:value="${cat.id}" />
+            <span th:text="${cat.nom}"></span><br />
+        </div>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <a th:href="@{/livres}">Retour à la liste</a>
+</body>
+
+</html>

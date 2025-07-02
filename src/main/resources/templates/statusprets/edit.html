@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier StatusPret</title>
+</head>
+
+<body>
+    <h1>Modifier StatusPret</h1>
+    <form th:action="@{/statusprets/edit}" method="post" th:object="${statusPret}">
+        <input type="hidden" th:field="*{id_status_pret}" />
+
+        <label for="idPret">Prêt :</label>
+        <select id="idPret" name="idPret" required>
+            <option th:each="pret : ${prets}" th:value="${pret.id_pret}"
+                th:text="${pret.id_pret} + ' - ' + ${pret.user.nom}"
+                th:selected="${pret.id_pret == statusPret.pret.id_pret}"></option>
+        </select>
+        <br />
+
+        <label for="idStatus1">Status :</label>
+        <select id="idStatus1" name="idStatus1" required>
+            <option th:each="status1 : ${status1s}" th:value="${status1.id_status1}" th:text="${status1.nom}"
+                th:selected="${status1.id_status1 == statusPret.status1.id_status1}"></option>
+        </select>
+        <br />
+
+        <label for="dateAction">Date Action :</label>
+        <input type="date" id="dateAction" name="dateAction" th:field="*{dateAction}" required />
+        <br />
+
+        <button type="submit">Enregistrer</button>
+    </form>
+    <a th:href="@{/statusprets}">Retour à la liste</a>
+</body>
+
+</html>

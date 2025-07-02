@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier la langue</title>
+</head>
+
+<body>
+
+    <h1>Modifier la langue</h1>
+
+    <form th:action="@{'/langues/edit/' + ${langue.id}}" th:object="${langue}" method="post">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" th:field="*{nom}" required /><br /><br />
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+
+    <a th:href="@{/langues}">Retour à la liste</a>
+
+</body>
+
+</html>

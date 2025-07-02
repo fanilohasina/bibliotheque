@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier un Adhérent</title>
+</head>
+
+<body>
+    <h1>Modifier l’Adhérent</h1>
+
+    <form th:action="@{/adherents/edit}" method="post" th:object="${adherent}">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required /><br><br>
+
+        <label>Quota :</label>
+        <select name="quotaId" required>
+            <option value="">-- Choisir un quota --</option>
+            <option th:each="q : ${quotas}" th:value="${q.id_quota}"
+                th:selected="${adherent.quota != null and q.id_quota == adherent.quota.id_quota}"
+                th:text="'Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
+            </option>
+        </select>
+
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <br>
+    <a th:href="@{/adherents}">← Retour à la liste</a>
+</body>
+
+</html>

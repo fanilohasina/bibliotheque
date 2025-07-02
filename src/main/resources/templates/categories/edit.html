@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Modifier une Catégorie</title>
+</head>
+
+<body>
+    <h1>Modifier une Catégorie</h1>
+
+    <form th:action="@{'/categories/edit/' + ${categorie.id}}" th:object="${categorie}" method="post">
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required /><br /><br />
+        <button type="submit">Mettre à jour</button>
+        <a th:href="@{/categories}">Annuler</a>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détail du prêt</title>
+</head>
+
+<body>
+    <h1>Détail du prêt</h1>
+
+    <p><strong>ID :</strong> <span th:text="${pret.id_pret}"></span></p>
+    <p><strong>Utilisateur :</strong> <span th:text="${pret.user.nom}"></span></p>
+    <p><strong>Livre :</strong> <span th:text="${pret.livre.titre}"></span></p>
+    <p><strong>Nombre :</strong> <span th:text="${pret.nbr}"></span></p>
+    <p><strong>Sur place :</strong> <span th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></span></p>
+    <p><strong>Date du prêt :</strong> <span th:text="${pret.datePret}"></span></p>
+
+    <a th:href="@{/prets}">Retour à la liste</a>
+</body>
+
+</html>

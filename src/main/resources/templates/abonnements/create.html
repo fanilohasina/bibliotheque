@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Créer un abonnement</title>
+</head>
+
+<body>
+    <h1>Créer un abonnement</h1>
+
+    <form th:action="@{/abonnements/create}" th:object="${abonnement}" method="post">
+
+        <label for="user">Utilisateur:</label>
+        <select th:field="*{user}">
+            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"></option>
+        </select>
+        <br>
+
+        <label>Date de début:</label>
+        <input type="date" th:field="*{date_debut}" />
+        <br>
+
+        <label>Date de fin:</label>
+        <input type="date" th:field="*{date_fin}" />
+        <br>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</body>
+
+</html>
