@@ -33,6 +33,9 @@ public class LoginController {
 
         if (user != null) {
             session.setAttribute("user", user);
+            if (user.getAdherent().getNom().equalsIgnoreCase("Admin")) {
+                return "redirect:/users";
+            }
             return "redirect:/membre";
         } else {
             model.addAttribute("error", "Nom ou mot de passe incorrect");

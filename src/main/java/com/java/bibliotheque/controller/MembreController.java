@@ -28,13 +28,31 @@ public class MembreController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping
-    public String menu() {
-        return "membre/menu";
-    }
+    // @GetMapping
+    // public String menu(HttpSession session) {
+    // User user = (User) session.getAttribute("user");
+    // if (user == null) {
+    // return "redirect:/login"; // Pas connecté
+    // }
 
-    @GetMapping("/livres")
-    public String listeLivres(@RequestParam(required = false) String titre, Model model) {
+    // if (user.getAdherent() != null &&
+    // "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+    // return "error/403"; // Admin interdit ici
+    // }
+    // return "membre/menu";
+    // }
+
+    @GetMapping
+    public String listeLivres(@RequestParam(required = false) String titre, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return "redirect:/login"; // Pas connecté
+        }
+
+        if (user.getAdherent() != null && "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // Admin interdit ici
+        }
         List<Livre> livres = (titre != null && !titre.isEmpty())
                 ? livreService.searchByTitre(titre)
                 : livreService.getAll();
