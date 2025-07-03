@@ -1,8 +1,12 @@
 package com.java.bibliotheque.controller;
 
 import com.java.bibliotheque.entite.Abonnement;
+import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.service.AbonnementService;
 import com.java.bibliotheque.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,32 +24,77 @@ public class AbonnementController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         model.addAttribute("abonnements", service.getAll());
         return "abonnements/list";
     }
 
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Vérifie que l’adherent est "Admin"
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         model.addAttribute("abonnement", new Abonnement());
         model.addAttribute("users", userService.getAll());
         return "abonnements/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Abonnement abonnement) {
+    public String create(@ModelAttribute Abonnement abonnement, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Vérifie que l’adherent est "Admin"
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         service.save(abonnement);
         return "redirect:/abonnements";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Vérifie que l’adherent est "Admin"
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         service.delete(id);
         return "redirect:/abonnements";
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Vérifie que l’adherent est "Admin"
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         service.getById(id).ifPresentOrElse(
                 abonnement -> model.addAttribute("abonnement", abonnement),
                 () -> {
@@ -56,7 +105,16 @@ public class AbonnementController {
 
     // --- EDIT FORM ---
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Vérifie que l’adherent est "Admin"
+        if (user.getAdherent() == null ||
+                !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // page interdite ou message d’erreur
+        }
         service.getById(id).ifPresentOrElse(
                 abonnement -> {
                     model.addAttribute("abonnement", abonnement);

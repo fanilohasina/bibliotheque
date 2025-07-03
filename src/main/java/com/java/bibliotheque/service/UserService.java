@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Service
 public class UserService {
 
     private final UserRepository repo;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repo) {
+    // Injection du repo + passwordEncoder via constructeur
+    public UserService(UserRepository repo, BCryptPasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAll() {
@@ -25,11 +30,16 @@ public class UserService {
     }
 
     public User create(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         return repo.save(user);
     }
 
     public User update(Long id, User user) {
         user.setId(id);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+
         return repo.save(user);
     }
 
@@ -44,4 +54,19 @@ public class UserService {
     public Optional<User> findByEmail(String email) {
         return repo.findByEmail(email);
     }
+
+    public User authenticate(String nom, String rawPassword) {
+        System.out.println("Recherche utilisateur pour nom = " + nom);
+        Optional<User> userOpt = repo.findByNom(nom);
+        if (!userOpt.isPresent()) {
+            System.out.println("Utilisateur non trouvé");
+            return null;
+        }
+        User user = userOpt.get();
+        System.out.println("Utilisateur trouvé, vérification mot de passe...");
+        boolean matches = passwordEncoder.matches(rawPassword, user.getPassword());
+        System.out.println("Correspondance mot de passe : " + matches);
+        return matches ? user : null;
+    }
+
 }

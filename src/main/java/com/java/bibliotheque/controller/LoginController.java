@@ -28,10 +28,11 @@ public class LoginController {
     public String login(@ModelAttribute("user") User userForm, Model model, HttpSession session) {
         String nom = userForm.getNom();
         String password = userForm.getPassword();
-        User user = userService.findByNomAndPassword(nom, password);
+
+        User user = userService.authenticate(nom, password);
 
         if (user != null) {
-            session.setAttribute("principale", user); // <- important
+            session.setAttribute("principale", user);
             return "redirect:/membre";
         } else {
             model.addAttribute("error", "Nom ou mot de passe incorrect");
