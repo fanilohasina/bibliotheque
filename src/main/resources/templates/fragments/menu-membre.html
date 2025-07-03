@@ -9,33 +9,45 @@
 
 <body>
     <div th:fragment="menu">
-        <link rel="stylesheet" th:href="@{/css/fragments/menu.css}" href="/css/fragments/menu-membre.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" th:href="@{/css/fragments/menu-membre.css}">
+
         <!-- Menu de navigation fixe -->
         <nav class="sidebar-menu">
             <!-- En-tête avec nom et email -->
             <div class="menu-header">
                 <div class="logo">
                     <i class="fas fa-book-open"></i>
-                    <h2>Jean Dupont</h2>
+                    <h2 th:text="${session.user.nom}" th:if="${session.user != null}">Jean Dupont</h2>
+                    <h2 th:unless="${session.user != null}">Invité</h2>
                 </div>
-                <div class="user-email">jean.dupont@email.com</div>
+                <div class="user-email" th:text="${session.user.adherent.nom}" th:if="${session.user != null}">
+                    jean.dupont@email.com</div>
             </div>
 
             <!-- Liste de navigation -->
             <ul class="menu-list">
-                <li><a th:href="@{/membre}" href="/livres"><i class="fas fa-book"></i><span>Livres</span></a>
-                </li>
-                <li><a th:href="@{/membre/prets}" href="/prets"><i
-                            class="fas fa-hand-holding"></i><span>Prêts</span></a></li>
-                <li><a th:href="@{/membre/reservations}" href="/reservations"><i
-                            class="fas fa-calendar-check"></i><span>Réservations</span></a></li>
-                <li><a th:href="@{/membre/penalites}" href="/penalites"><i
-                            class="fas fa-exclamation-triangle"></i><span>Pénalités</span></a></li>
+                <li><a th:href="@{/membre}" href="/livres">
+                        <i class="fas fa-book"></i>
+                        <span>Livres</span>
+                    </a></li>
+                <li><a th:href="@{/membre/prets}" href="/prets">
+                        <i class="fas fa-hand-holding"></i>
+                        <span>Prêts</span>
+                    </a></li>
+                <li><a th:href="@{/membre/reservations}" href="/reservations">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Réservations</span>
+                    </a></li>
+                <li><a th:href="@{/membre/penalites}" href="/penalites">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Pénalités</span>
+                    </a></li>
             </ul>
         </nav>
 
         <!-- Décalage pour le contenu principal -->
-        <div class="main-content-offset"></div>
+        <!-- <div class="main-content-offset"></div> -->
     </div>
 </body>
 

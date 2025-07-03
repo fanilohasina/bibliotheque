@@ -1,6 +1,7 @@
 package com.java.bibliotheque.controller;
 
 import com.java.bibliotheque.entite.*;
+import com.java.bibliotheque.repository.ExemplaireRepository;
 import com.java.bibliotheque.service.*;
 
 import jakarta.servlet.http.HttpSession;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/membre")
@@ -18,11 +21,13 @@ public class MembreController {
     private final LivreService livreService;
     private final PretService pretService;
     private final ReservationService reservationService;
+    private final ExemplaireRepository exemplaireRepository;
 
     public MembreController(
             LivreService livreService,
             PretService pretService,
-            ReservationService reservationService) {
+            ReservationService reservationService, ExemplaireRepository exemplaireRepository) {
+        this.exemplaireRepository = exemplaireRepository;
         this.livreService = livreService;
         this.pretService = pretService;
         this.reservationService = reservationService;
@@ -47,17 +52,30 @@ public class MembreController {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            return "redirect:/login"; // Pas connecté
+            return "redirect:/login";
         }
 
         if (user.getAdherent() != null && "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
-            return "error/403"; // Admin interdit ici
+            return "error/403";
         }
+
         List<Livre> livres = (titre != null && !titre.isEmpty())
                 ? livreService.searchByTitre(titre)
                 : livreService.getAll();
+
+        // Récupérer le nombre d'exemplaires par livre
+        List<Object[]> exemplaireCounts = exemplaireRepository.getExemplaireCountPerLivre();
+        Map<Long, Integer> livreExemplaireMap = new HashMap<>();
+        for (Object[] row : exemplaireCounts) {
+            Long livreId = (Long) row[0];
+            Integer total = ((Number) row[1]).intValue();
+            livreExemplaireMap.put(livreId, total);
+        }
+
         model.addAttribute("livres", livres);
         model.addAttribute("titreRecherche", titre);
+        model.addAttribute("exemplaireCounts", livreExemplaireMap);
+
         return "membre/livres";
     }
 

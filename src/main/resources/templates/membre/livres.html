@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livres disponibles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/membre/livres.css}">
+
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -21,24 +26,47 @@
                 <option value="auteur">Auteur</option>
                 <option value="categorie">Catégorie</option>
             </select>
-            <input type="text" name="search" placeholder="Rechercher...">
-            <button type="submit">Rechercher</button>
+            <input type="text" name="search" placeholder="Rechercher un livre...">
+            <button type="submit">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
         </form>
 
-        <!-- Liste des livres en blocs -->
+        <!-- Liste des livres en grille -->
         <div class="livres-container">
             <div th:each="livre : ${livres}" class="livre-card">
-                <h3 th:text="${livre.titre}"></h3>
-                <p th:text="'Auteur: ' + ${livre.auteur.nom}"></p>
+                <h3 th:text="${livre.titre}">Le Petit Prince</h3>
 
-                <p>Catégories :
-                    <span th:each="cat : ${livre.categories}" class="badge" th:text="${cat.nom}"></span>
-                </p>
+                <div class="livre-info">
+                    <p><i class="fas fa-user"></i> <span th:text="${livre.auteur.nom}">Antoine de Saint-Exupéry</span>
+                    </p>
+                    <p><i class="fas fa-calendar-alt"></i> <span th:text="${livre.dateDePublication}">1943</span></p>
+                </div>
 
+                <div class="categories-container">
+                    <div class="categories-label">
+                        <i class="fas fa-tags"></i> Catégories :
+                    </div>
+                    <div class="badges-container">
+                        <span th:each="cat : ${livre.categories}" class="badge" th:text="${cat.nom}">Fiction</span>
+                    </div>
+                </div>
+
+                <div class="disponibilite"
+                    th:classappend="${exemplaireCounts[livre.id] == 0} ? 'indisponible' : (${exemplaireCounts[livre.id] <= 2} ? 'limite' : '')">
+                    <i class="fas fa-book" th:if="${exemplaireCounts[livre.id] > 0}"></i>
+                    <i class="fas fa-exclamation-triangle" th:if="${exemplaireCounts[livre.id] == 0}"></i>
+                    <span
+                        th:text="${exemplaireCounts[livre.id] > 0} ? ${exemplaireCounts[livre.id]} + ' exemplaire(s) disponible(s)' : 'Indisponible'">
+                        3 exemplaires disponibles
+                    </span>
+                </div>
 
                 <form th:action="@{/membre/livres/reserver}" method="get">
                     <input type="hidden" name="id" th:value="${livre.id}">
-                    <button type="submit">Réserver</button>
+                    <button type="submit">
+                        <i class="fas fa-bookmark"></i> Réserver
+                    </button>
                 </form>
             </div>
         </div>
