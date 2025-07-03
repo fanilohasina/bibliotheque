@@ -32,7 +32,7 @@ public class LoginController {
         User user = userService.authenticate(nom, password);
 
         if (user != null) {
-            session.setAttribute("principale", user);
+            session.setAttribute("user", user);
             return "redirect:/membre";
         } else {
             model.addAttribute("error", "Nom ou mot de passe incorrect");

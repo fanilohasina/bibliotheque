@@ -1,10 +1,14 @@
 package com.java.bibliotheque.controller;
 
 import com.java.bibliotheque.entite.Livre;
+import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.service.AuteurService;
 import com.java.bibliotheque.service.CategorieService;
 import com.java.bibliotheque.service.LangueService;
 import com.java.bibliotheque.service.LivreService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +33,27 @@ public class LivreController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         model.addAttribute("livres", livreService.getAll());
         return "livres/list";
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         return livreService.getById(id)
                 .map(livre -> {
                     model.addAttribute("livre", livre);
@@ -45,7 +63,14 @@ public class LivreController {
     }
 
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         model.addAttribute("livre", new Livre());
         model.addAttribute("auteurs", auteurService.getAll());
         model.addAttribute("langues", langueService.getAll());
@@ -54,13 +79,27 @@ public class LivreController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Livre livre) {
+    public String create(@ModelAttribute Livre livre, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         livreService.create(livre);
         return "redirect:/livres";
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         return livreService.getById(id)
                 .map(livre -> {
                     model.addAttribute("livre", livre);
@@ -73,13 +112,27 @@ public class LivreController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute Livre livre) {
+    public String edit(@PathVariable Long id, @ModelAttribute Livre livre, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         livreService.update(id, livre);
         return "redirect:/livres";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         livreService.delete(id);
         return "redirect:/livres";
     }

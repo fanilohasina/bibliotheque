@@ -1,7 +1,11 @@
 package com.java.bibliotheque.controller;
 
 import com.java.bibliotheque.entite.StatusPret;
+import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.service.StatusPretService;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.java.bibliotheque.service.PretService;
 import com.java.bibliotheque.service.Status1Service;
 import org.springframework.stereotype.Controller;
@@ -24,13 +28,27 @@ public class StatusPretController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         model.addAttribute("statusprets", statusPretService.findAll());
         return "statusprets/list"; // Thymeleaf template à créer
     }
 
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         model.addAttribute("statusPret", new StatusPret());
         model.addAttribute("prets", pretService.getAll());
         model.addAttribute("status1s", status1Service.getAll());
@@ -39,7 +57,14 @@ public class StatusPretController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute StatusPret statusPret, @RequestParam Integer idPret,
-            @RequestParam Long idStatus1) {
+            @RequestParam Long idStatus1, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         statusPret.setPret(pretService.getById(idPret).orElse(null));
         statusPret.setStatus1(status1Service.getById(idStatus1).orElse(null));
         statusPretService.save(statusPret);
@@ -47,7 +72,14 @@ public class StatusPretController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Integer id, Model model) {
+    public String editForm(@PathVariable Integer id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         StatusPret sp = statusPretService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("StatusPret introuvable"));
         model.addAttribute("statusPret", sp);
@@ -58,7 +90,14 @@ public class StatusPretController {
 
     @PostMapping("/edit")
     public String edit(@ModelAttribute StatusPret statusPret, @RequestParam Integer idPret,
-            @RequestParam Long idStatus1) {
+            @RequestParam Long idStatus1, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         statusPret.setPret(pretService.getById(idPret).orElse(null));
         statusPret.setStatus1(status1Service.getById(idStatus1).orElse(null));
         statusPretService.save(statusPret);
@@ -66,13 +105,27 @@ public class StatusPretController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         statusPretService.deleteById(id);
         return "redirect:/statusprets";
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Integer id, Model model) {
+    public String details(@PathVariable Integer id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
         StatusPret sp = statusPretService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("StatusPret introuvable"));
         model.addAttribute("statusPret", sp);
