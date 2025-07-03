@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes prêts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/membre/prets.css}">
 
 </head>
@@ -13,31 +14,54 @@
     <div th:replace="fragments/menu-membre :: menu"></div>
 
     <div class="main-content">
-        <h1>Mes prêts</h1>
+        <h1><i class="fas fa-hand-holding"></i> Mes prêts</h1>
 
         <form method="get" th:action="@{/membre/prets}" class="search-bar">
             <select name="searchType">
-                <option value="titre">Titre</option>
-                <option value="date">Date</option>
+                <option value="titre">📚 Titre</option>
+                <option value="date">📅 Date</option>
             </select>
-            <input type="text" name="search" placeholder="Rechercher...">
-            <button type="submit">Filtrer</button>
+            <input type="text" name="search" placeholder="Rechercher dans mes prêts...">
+            <button type="submit">
+                <i class="fas fa-filter"></i> Filtrer
+            </button>
         </form>
 
-        <table>
-            <tr>
-                <th>Livre</th>
-                <th>Nombre</th>
-                <th>Date</th>
-                <th>Sur place</th>
-            </tr>
-            <tr th:each="pret : ${prets}">
-                <td th:text="${pret.livre.titre}"></td>
-                <td th:text="${pret.nbr}"></td>
-                <td th:text="${pret.datePret}"></td>
-                <td th:text="${pret.isSurPlace ? 'Oui' : 'Non'}"></td>
-            </tr>
-        </table>
+        <div class="table-container">
+            <table th:if="${not #lists.isEmpty(prets)}">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-book"></i> Livre</th>
+                        <th><i class="fas fa-hashtag"></i> Nombre</th>
+                        <th><i class="fas fa-calendar-alt"></i> Date</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Sur place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pret : ${prets}">
+                        <td class="livre-titre" data-label="Livre:" th:text="${pret.livre.titre}">Le Petit Prince</td>
+                        <td class="nombre" data-label="Nombre:" th:text="${pret.nbr}">2</td>
+                        <td class="date" data-label="Date:" th:text="${#temporals.format(pret.datePret, 'dd/MM/yyyy')}">
+                            15/03/2024</td>
+                        <td class="sur-place" data-label="Sur place:">
+                            <span th:if="${pret.isSurPlace}" class="badge-oui">
+                                <i class="fas fa-check"></i> Oui
+                            </span>
+                            <span th:unless="${pret.isSurPlace}" class="badge-non">
+                                <i class="fas fa-home"></i> Non
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(prets)}" class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3>Aucun prêt trouvé</h3>
+                <p>Vous n'avez actuellement aucun livre emprunté.<br>
+                    Explorez notre catalogue pour découvrir de nouveaux livres !</p>
+            </div>
+        </div>
     </div>
 </body>
 

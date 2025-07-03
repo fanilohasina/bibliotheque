@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="menu">
+        <link rel="stylesheet" th:href="@{/css/fragments/menu.css}">
+
+        <!-- Menu de navigation fixe -->
+        <nav class="sidebar-menu">
+            <!-- Logo/Titre en haut -->
+            <div class="menu-header">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <h2>Bibliothèque</h2>
+                </div>
+            </div>
+
+            <!-- Liste de navigation -->
+            <ul class="menu-list">
+                <li><a th:href="@{/admin/prets}"><i class="fas fa-credit-card"></i><span>Prets</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Décalage pour le contenu principal -->
+        <!-- <div class="main-content-offset"></div> -->
+    </div>
+</body>
+
+</html>

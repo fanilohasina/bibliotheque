@@ -99,9 +99,14 @@ public class MembreController {
 
     @GetMapping("/prets")
     public String listePrets(Model model, HttpSession session, @RequestParam(required = false) String livre) {
-        User user = (User) session.getAttribute("principale"); // même clé que dans login
+        User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login"; // utilisateur non connecté
+            return "redirect:/login"; // Pas connecté
+        }
+
+        if (user.getAdherent() != null &&
+                "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // Admin interdit ici
         }
         List<Pret> prets = (livre != null && !livre.isEmpty())
                 ? pretService.findByUserAndLivreTitre(user, livre)
@@ -113,9 +118,14 @@ public class MembreController {
 
     @GetMapping("/reservations")
     public String listeReservations(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("principale");
+        User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login"; // utilisateur non connecté
+            return "redirect:/login"; // Pas connecté
+        }
+
+        if (user.getAdherent() != null &&
+                "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // Admin interdit ici
         }
 
         List<Reservation> reservations = reservationService.findByUser(user);
@@ -125,7 +135,16 @@ public class MembreController {
 
     // Réserver un livre
     @GetMapping("/livres/reserver")
-    public String reserverForm(@RequestParam Long id, Model model) {
+    public String reserverForm(@RequestParam Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login"; // Pas connecté
+        }
+
+        if (user.getAdherent() != null &&
+                "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // Admin interdit ici
+        }
         Livre livre = livreService.getById(id).orElseThrow();
         model.addAttribute("livre", livre);
         model.addAttribute("reservation", new Reservation());
@@ -134,9 +153,14 @@ public class MembreController {
 
     @PostMapping("/livres/reserver")
     public String reserver(@RequestParam("id") Long id, @ModelAttribute Reservation reservation, HttpSession session) {
-        User user = (User) session.getAttribute("loggedUser");
+        User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:/login"; // Pas connecté
+        }
+
+        if (user.getAdherent() != null &&
+                "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403"; // Admin interdit ici
         }
 
         Livre livre = livreService.getById(id).orElseThrow();

@@ -1,30 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes réservations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}">
 </head>
 
 <body>
-    <h1>Mes réservations</h1>
+    <div th:replace="fragments/menu-membre :: menu"></div>
 
-    <form method="get" th:action="@{/membre/reservations}">
-        <input type="text" name="search" placeholder="Titre du livre">
-        <button type="submit">Filtrer</button>
-    </form>
+    <div class="main-content">
+        <h1><i class="fas fa-calendar-check"></i> Mes réservations</h1>
 
-    <table border="1">
-        <tr>
-            <th>Livre</th>
-            <th>Nombre</th>
-            <th>Sur place</th>
-        </tr>
-        <tr th:each="r : ${reservations}">
-            <td th:text="${r.livre.titre}"></td>
-            <td th:text="${r.nbr}"></td>
-            <td th:text="${r.isSurPlace ? 'Oui' : 'Non'}"></td>
-        </tr>
-    </table>
+        <form method="get" th:action="@{/membre/reservations}" class="search-bar">
+            <input type="text" name="search" placeholder="Rechercher par titre...">
+            <button type="submit">
+                <i class="fas fa-filter"></i> Filtrer
+            </button>
+        </form>
+
+        <div class="table-container">
+            <table th:if="${not #lists.isEmpty(reservations)}">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-book"></i> Livre</th>
+                        <th><i class="fas fa-hashtag"></i> Nombre</th>
+                        <th><i class="fas fa-book"></i> Date de reservation</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Sur place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${reservations}">
+                        <td class="livre-titre" data-label="Livre:" th:text="${r.livre.titre}">Titre</td>
+                        <td class="nombre" data-label="Nombre:" th:text="${r.nbr}">1</td>
+                        <td class="date" data-label="Date:" th:text="${r.dateReservation}">1</td>
+
+                        <td class="sur-place" data-label="Sur place:">
+                            <span th:if="${r.isSurPlace}" class="badge-oui">
+                                <i class="fas fa-check"></i> Oui
+                            </span>
+                            <span th:unless="${r.isSurPlace}" class="badge-non">
+                                <i class="fas fa-home"></i> Non
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(reservations)}" class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <h3>Aucune réservation trouvée</h3>
+                <p>Vous n'avez pas encore réservé de livres.<br>
+                    Explorez notre catalogue et réservez vos lectures préférées !</p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

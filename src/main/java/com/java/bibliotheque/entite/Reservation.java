@@ -1,5 +1,7 @@
 package com.java.bibliotheque.entite;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,8 +23,17 @@ public class Reservation {
     private Integer nbr;
 
     private Boolean isSurPlace;
+    private LocalDate dateReservation;
 
     // Getters & Setters
+
+    public LocalDate getDateReservation() {
+        return dateReservation;
+    }
+
+    public void setDateReservation(LocalDate dateReservation) {
+        this.dateReservation = dateReservation;
+    }
 
     public Integer getId_reservation() {
         return id_reservation;
