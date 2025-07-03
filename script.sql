@@ -1,0 +1,1 @@
+SELECT * FROM abonnement a WHERE a.id_user = 1

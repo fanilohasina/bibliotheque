@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Message</title>
+</head>
+
+<body>
+
+    <h2 th:if="${success}" style="color: green;">✔️ <span th:text="${message}"></span></h2>
+    <h2 th:if="${!success}" style="color: red;">❌ <span th:text="${message}"></span></h2>
+
+    <a href="/admin/prets/ajouter">Retour au formulaire</a>
+
+</body>
+
+</html>
