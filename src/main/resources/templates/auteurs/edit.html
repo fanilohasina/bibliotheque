@@ -2,26 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier un auteur</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}">
 </head>
 
 <body>
-    <h1>Modifier l'auteur</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{'/auteurs/edit/' + ${auteur.id}}" th:object="${auteur}" method="post">
-        <label>Nom :</label>
-        <input type="text" th:field="*{nom}" required /><br />
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-        <label>Biographie :</label><br />
-        <textarea th:field="*{biographie}" rows="4" cols="50"></textarea><br />
+        <h1>Modifier l’auteur</h1>
 
-        <label>Nationalité :</label>
-        <input type="text" th:field="*{nationalite}" required /><br />
+        <!-- Container du formulaire -->
+        <div class="form-container">
+            <form th:action="@{'/auteurs/edit/' + ${auteur.id}}" th:object="${auteur}" method="post">
 
-        <button type="submit">Enregistrer</button>
-    </form>
+                <!-- Champ Nom -->
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" placeholder="Nom de l'auteur" required />
+                    <div class="error-message">Veuillez entrer un nom</div>
+                </div>
 
-    <a href="/auteurs">Retour à la liste</a>
+                <!-- Champ Biographie -->
+                <div class="form-group">
+                    <label for="biographie">Biographie :</label>
+                    <textarea id="biographie" th:field="*{biographie}" rows="4"
+                        placeholder="Biographie de l'auteur"></textarea>
+                </div>
+
+                <!-- Champ Nationalité -->
+                <div class="form-group">
+                    <label for="nationalite">Nationalité :</label>
+                    <input type="text" id="nationalite" th:field="*{nationalite}" placeholder="Nationalité" required />
+                    <div class="error-message">Veuillez indiquer une nationalité</div>
+                </div>
+
+                <!-- Actions du formulaire -->
+                <div class="form-actions">
+                    <a th:href="@{/auteurs}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour l’auteur</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

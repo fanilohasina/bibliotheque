@@ -2,18 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Créer une Catégorie</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Créer une Catégorie</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{/categories/create}" th:object="${categorie}" method="post">
-        <label>Nom :</label>
-        <input type="text" th:field="*{nom}" required /><br /><br />
-        <button type="submit">Enregistrer</button>
-        <a th:href="@{/categories}">Annuler</a>
-    </form>
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Créer une catégorie</h1>
+
+        <div class="form-container">
+            <form th:action="@{/categories/create}" th:object="${categorie}" method="post">
+
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" placeholder="Nom de la catégorie" required />
+                    <div class="error-message">Veuillez entrer un nom</div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/categories}" class="btn-back">Annuler</a>
+                    <button type="submit" class="btn-submit">Enregistrer</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

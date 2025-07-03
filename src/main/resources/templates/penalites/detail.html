@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Détails de la Pénalité</title>
+</head>
+
+<body>
+    <h1>Détails de la Pénalité</h1>
+
+    <p><strong>ID :</strong> <span th:text="${penalite.idPenalite}"></span></p>
+    <p><strong>Utilisateur :</strong> <span th:text="${penalite.user.nom}"></span></p>
+    <p><strong>Date d'action :</strong> <span th:text="${penalite.dateAction}"></span></p>
+    <p><strong>Nombre de jours :</strong> <span th:text="${penalite.nbrJour}"></span></p>
+
+    <a th:href="@{/penalites}">Retour à la liste</a>
+</body>
+
+</html>

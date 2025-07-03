@@ -2,22 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modifier la langue</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <h1>Modifier la langue</h1>
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Modifier la langue</h1>
 
-    <form th:action="@{'/langues/edit/' + ${langue.id}}" th:object="${langue}" method="post">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" th:field="*{nom}" required /><br /><br />
+        <div class="form-container">
+            <form th:action="@{'/langues/edit/' + ${langue.id}}" th:object="${langue}" method="post">
 
-        <button type="submit">Mettre à jour</button>
-    </form>
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" placeholder="Nom de la langue" required />
+                    <div class="error-message">Veuillez entrer un nom</div>
+                </div>
 
-    <a th:href="@{/langues}">Retour à la liste</a>
+                <div class="form-actions">
+                    <a th:href="@{/langues}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour</button>
+                </div>
 
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

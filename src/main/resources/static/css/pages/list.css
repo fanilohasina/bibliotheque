@@ -1,0 +1,386 @@
+/* CSS pour la page Liste des prêts */
+/* À sauvegarder dans : /css/pages/prets.css */
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
+    --border-radius: 8px;
+}
+
+/* Container principal avec décalage pour le menu */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Zone de contenu principal */
+.main-content {
+    margin-left: 300px;
+    /* Décalage pour le menu fixe */
+    padding: 30px;
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+/* Titre principal */
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+/* Header de la page avec bouton créer */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+/* Bouton Créer nouveau prêt */
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--success-color), #2ecc71);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    background: linear-gradient(135deg, #2ecc71, var(--success-color));
+}
+
+.btn-create::before {
+    content: '+';
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Container du tableau */
+.table-container {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+/* Styles du tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+/* En-tête du tableau */
+thead {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+}
+
+thead th {
+    padding: 18px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    position: relative;
+}
+
+thead th::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+thead th:last-child::after {
+    display: none;
+}
+
+/* Corps du tableau */
+tbody tr {
+    transition: var(--transition);
+    border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+    transform: scale(1.001);
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(248, 249, 250, 0.5);
+}
+
+tbody tr:nth-child(even):hover {
+    background-color: rgba(52, 152, 219, 0.08);
+}
+
+tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border: none;
+}
+
+/* Colonne ID avec style spécial */
+tbody td:first-child {
+    font-weight: 600;
+    color: var(--accent-color);
+    font-family: 'Courier New', monospace;
+}
+
+/* Colonne Sur place avec badges */
+tbody td:nth-child(5) {
+    font-weight: 600;
+}
+
+/* Style pour Oui/Non */
+.badge-oui {
+    background: var(--success-color);
+    color: var(--white);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-non {
+    background: var(--text-muted);
+    color: var(--white);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Boutons d'actions */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}
+
+.btn-detail {
+    background: var(--accent-color);
+    color: var(--white);
+}
+
+.btn-detail:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-edit {
+    background: var(--warning-color);
+    color: var(--white);
+}
+
+.btn-edit:hover {
+    background: #e67e22;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background: var(--danger-color);
+    color: var(--white);
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 250px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 60px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    /* Tableau responsive */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 800px;
+    }
+
+    .actions-cell {
+        flex-direction: column;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    thead th {
+        padding: 12px 8px;
+        font-size: 11px;
+    }
+
+    tbody td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+
+    .btn-create {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+
+    .btn-action {
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+}
+
+/* Animation d'entrée */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.page-header {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+/* Loading state pour les tableaux */
+.table-loading {
+    position: relative;
+}
+
+.table-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* États vides */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.empty-state h3 {
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    line-height: 1.5;
+}

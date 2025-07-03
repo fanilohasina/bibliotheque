@@ -2,37 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des StatusReservations</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des StatusReservations</h1>
-    <a th:href="@{/statusReservations/create}">Créer un nouveau StatusReservation</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Réservation</th>
-                <th>Status</th>
-                <th>Date action</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="sr : ${statusReservations}">
-                <td th:text="${sr.id_status_pret}"></td>
-                <td th:text="${sr.reservation.id_reservation}"></td>
-                <td th:text="${sr.status2.nom}"></td>
-                <td th:text="${sr.dateAction}"></td>
-                <td>
-                    <a th:href="@{'/statusReservations/details/' + ${sr.id_status_pret}}">Détails</a> |
-                    <a th:href="@{'/statusReservations/edit/' + ${sr.id_status_pret}}">Éditer</a> |
-                    <a th:href="@{'/statusReservations/delete/' + ${sr.id_status_pret}}"
-                        onclick="return confirm('Supprimer ?');">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+
+        <!-- En-tête -->
+        <div class="page-header">
+            <h1>Liste des StatusReservations</h1>
+            <a th:href="@{/statusReservations/create}" class="btn-create">Créer un nouveau StatusReservation</a>
+        </div>
+
+        <!-- Tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Réservation</th>
+                        <th>Status</th>
+                        <th>Date action</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sr : ${statusReservations}">
+                        <td th:text="${sr.id_status_pret}"></td>
+                        <td th:text="${sr.reservation.id_reservation}"></td>
+                        <td th:text="${sr.status2.nom}"></td>
+                        <td th:text="${sr.dateAction}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{'/statusReservations/details/' + ${sr.id_status_pret}}"
+                                class="btn-action btn-detail">Détails</a>
+                            <a th:href="@{'/statusReservations/edit/' + ${sr.id_status_pret}}"
+                                class="btn-action btn-edit">Éditer</a>
+                            <a th:href="@{'/statusReservations/delete/' + ${sr.id_status_pret}}"
+                                class="btn-action btn-delete" onclick="return confirm('Supprimer ?');">Supprimer</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(statusReservations)}">
+                        <td colspan="5" class="empty-state">
+                            <h3>Aucun StatusReservation trouvé</h3>
+                            <p>Il n'y a actuellement aucun StatusReservation enregistré.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

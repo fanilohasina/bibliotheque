@@ -1,0 +1,390 @@
+/* CSS pour le formulaire de création de prêt */
+/* À sauvegarder dans : /css/pages/pret-form.css */
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --input-border: #ced4da;
+    --input-focus: #80bdff;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
+    --border-radius: 8px;
+}
+
+/* Container principal avec décalage pour le menu */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Zone de contenu principal */
+.main-content {
+    margin-left: 300px;
+    /* Décalage pour le menu fixe */
+    padding: 30px;
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+/* Titre principal */
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+/* Container du formulaire */
+.form-container {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+}
+
+/* Styles du formulaire */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Groupes de champs */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+/* Champs de saisie génériques */
+input,
+select,
+textarea {
+    padding: 12px 16px;
+    border: 2px solid var(--input-border);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-family: inherit;
+    transition: var(--transition);
+    background-color: var(--white);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* États de focus */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Champs select spéciaux */
+select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+    appearance: none;
+}
+
+select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%233498db' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Champ number avec style spécial */
+input[type="number"] {
+    font-weight: 600;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+}
+
+/* Champ date */
+input[type="date"] {
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+}
+
+/* Checkbox personnalisée */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.checkbox-label {
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Bouton principal */
+.btn-submit {
+    background: linear-gradient(135deg, var(--success-color), #2ecc71);
+    color: var(--white);
+    padding: 15px 30px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    background: linear-gradient(135deg, #2ecc71, var(--success-color));
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Lien de retour */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--white);
+    color: var(--text-dark);
+    text-decoration: none;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+    margin-top: 20px;
+    width: fit-content;
+}
+
+.btn-back::before {
+    content: '←';
+    font-size: 16px;
+}
+
+.btn-back:hover {
+    background: var(--accent-color);
+    color: var(--white);
+    border-color: var(--accent-color);
+    transform: translateX(-3px);
+}
+
+/* Container pour les boutons */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Messages d'erreur */
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+input:invalid+.error-message {
+    display: block;
+}
+
+/* États de validation */
+input:valid {
+    border-color: var(--success-color);
+}
+
+input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--danger-color);
+}
+
+/* Animation d'entrée */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-container {
+    animation: slideInUp 0.6s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 250px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 60px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .form-container {
+        padding: 25px;
+        margin: 0 10px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-submit,
+    .btn-back {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        margin: 0 5px;
+    }
+
+    input,
+    select {
+        font-size: 16px;
+        /* Évite le zoom sur iOS */
+    }
+
+    .btn-submit {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Améliorations d'accessibilité */
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Loading state pour le formulaire */
+.form-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.form-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--accent-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -2,38 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des auteurs</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des auteurs</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a href="/auteurs/create">➕ Ajouter un auteur</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Nationalité</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="auteur : ${auteurs}">
-                <td th:text="${auteur.id}"></td>
-                <td th:text="${auteur.nom}"></td>
-                <td th:text="${auteur.nationalite}"></td>
-                <td>
-                    <a th:href="@{'/auteurs/' + ${auteur.id}}">👁 Voir</a> |
-                    <a th:href="@{'/auteurs/edit/' + ${auteur.id}}">✏️ Modifier</a> |
-                    <form th:action="@{'/auteurs/delete/' + ${auteur.id}}" method="post" style="display:inline">
-                        <button type="submit" onclick="return confirm('Supprimer ?')">🗑 Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des auteurs</h1>
+            <a th:href="@{/auteurs/create}" class="btn-create">➕ Ajouter un auteur</a>
+        </div>
+
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Nationalité</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="auteur : ${auteurs}">
+                        <td th:text="${auteur.id}"></td>
+                        <td th:text="${auteur.nom}"></td>
+                        <td th:text="${auteur.nationalite}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/auteurs/{id}(id=${auteur.id})}" class="btn-action btn-detail">👁 Voir</a>
+                            <a th:href="@{/auteurs/edit/{id}(id=${auteur.id})}" class="btn-action btn-edit">✏️
+                                Modifier</a>
+                            <form th:action="@{/auteurs/delete/{id}(id=${auteur.id})}" method="post"
+                                style="display:inline">
+                                <button type="submit" class="btn-action btn-delete"
+                                    onclick="return confirm('Supprimer ?')">🗑 Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(auteurs)}">
+                        <td colspan="4" class="empty-state">Aucun auteur trouvé.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

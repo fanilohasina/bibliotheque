@@ -2,26 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Modifier Abonnement</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un abonnement</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}">
 </head>
 
 <body>
-    <h1>Modifier un Abonnement</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{'/abonnements/edit/' + ${abonnement.id_abonnement}}" th:object="${abonnement}" method="post">
-        <label>Utilisateur :</label>
-        <select th:field="*{user}">
-            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}">User</option>
-        </select>
-        <label>Date début :</label>
-        <input type="date" th:field="*{date_debut}" />
-        <label>Date fin :</label>
-        <input type="date" th:field="*{date_fin}" />
-        <button type="submit">Enregistrer</button>
-    </form>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
+        <h1>Modifier un abonnement</h1>
 
-    <a th:href="@{/abonnements}">Retour à la liste</a>
+        <!-- Container du formulaire -->
+        <div class="form-container">
+            <form th:action="@{'/abonnements/edit/' + ${abonnement.id_abonnement}}" th:object="${abonnement}"
+                method="post">
+
+                <!-- Champ Utilisateur -->
+                <div class="form-group">
+                    <label for="user">Utilisateur :</label>
+                    <select id="user" name="user.id" th:field="*{user}" required>
+                        <option value="">-- Sélectionner un utilisateur --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un utilisateur</div>
+                </div>
+
+                <!-- Champ Date de début -->
+                <div class="form-group">
+                    <label for="date_debut">Date de début :</label>
+                    <input type="date" id="date_debut" th:field="*{date_debut}" required />
+                    <div class="error-message">Veuillez choisir une date valide</div>
+                </div>
+
+                <!-- Champ Date de fin -->
+                <div class="form-group">
+                    <label for="date_fin">Date de fin :</label>
+                    <input type="date" id="date_fin" th:field="*{date_fin}" required />
+                    <div class="error-message">Veuillez choisir une date valide</div>
+                </div>
+
+                <!-- Actions du formulaire -->
+                <div class="form-actions">
+                    <a th:href="@{/abonnements}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour l’abonnement</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

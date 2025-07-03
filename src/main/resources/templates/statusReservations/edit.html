@@ -2,39 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Éditer StatusReservation</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Éditer StatusReservation</h1>
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{'/statusReservations/edit/' + ${statusReservation.id_status_pret}}"
-        th:object="${statusReservation}" method="post">
+    <div class="main-content">
+        <h1>Éditer StatusReservation</h1>
 
-        <label for="reservation">Réservation :</label>
-        <select id="reservation" name="reservation.id_reservation" required>
-            <option value="" disabled>-- Choisir une réservation --</option>
-            <option th:each="res : ${reservations}" th:value="${res.id_reservation}" th:text="${res.id_reservation}"
-                th:selected="${res.id_reservation} == ${statusReservation.reservation.id_reservation}"></option>
-        </select>
-        <br />
+        <div class="form-container">
+            <form th:action="@{'/statusReservations/edit/' + ${statusReservation.id_status_pret}}"
+                th:object="${statusReservation}" method="post">
 
-        <label for="status2">Status :</label>
-        <select id="status2" name="status2.id_status2" required>
-            <option value="" disabled>-- Choisir un status --</option>
-            <option th:each="stat : ${statuses}" th:value="${stat.id_status2}" th:text="${stat.nom}"
-                th:selected="${stat.id_status2} == ${statusReservation.status2.id_status2}"></option>
-        </select>
-        <br />
+                <div class="form-group">
+                    <label for="reservation">Réservation :</label>
+                    <select id="reservation" name="reservation.id_reservation" required class="form-select">
+                        <option value="" disabled>-- Choisir une réservation --</option>
+                        <option th:each="res : ${reservations}" th:value="${res.id_reservation}"
+                            th:text="${res.id_reservation}"
+                            th:selected="${res.id_reservation} == ${statusReservation.reservation.id_reservation}">
+                        </option>
+                    </select>
+                </div>
 
-        <label for="dateAction">Date Action :</label>
-        <input type="date" id="dateAction" th:field="*{dateAction}" required />
-        <br />
+                <div class="form-group">
+                    <label for="status2">Status :</label>
+                    <select id="status2" name="status2.id_status2" required class="form-select">
+                        <option value="" disabled>-- Choisir un status --</option>
+                        <option th:each="stat : ${statuses}" th:value="${stat.id_status2}" th:text="${stat.nom}"
+                            th:selected="${stat.id_status2} == ${statusReservation.status2.id_status2}">
+                        </option>
+                    </select>
+                </div>
 
-        <button type="submit">Sauvegarder</button>
-    </form>
+                <div class="form-group">
+                    <label for="dateAction">Date Action :</label>
+                    <input type="date" id="dateAction" th:field="*{dateAction}" required class="form-input" />
+                </div>
 
-    <a th:href="@{/statusReservations}">Retour à la liste</a>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a th:href="@{/statusReservations}" class="btn-back">Retour à la liste</a>
 </body>
 
 </html>

@@ -2,20 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détail du prêt</title>
+    <link rel="stylesheet" th:href="@{/css/pages/detail.css}">
 </head>
 
 <body>
-    <h1>Détail du prêt</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <p><strong>ID :</strong> <span th:text="${pret.id_pret}"></span></p>
-    <p><strong>Utilisateur :</strong> <span th:text="${pret.user.nom}"></span></p>
-    <p><strong>Livre :</strong> <span th:text="${pret.livre.titre}"></span></p>
-    <p><strong>Nombre :</strong> <span th:text="${pret.nbr}"></span></p>
-    <p><strong>Sur place :</strong> <span th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></span></p>
-    <p><strong>Date du prêt :</strong> <span th:text="${pret.datePret}"></span></p>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <a th:href="@{/prets}">Retour à la liste</a>
+        <h1>Détail du prêt</h1>
+
+        <!-- Container des détails -->
+        <div class="detail-container">
+
+            <div class="detail-group">
+                <p><strong>ID :</strong> <span th:text="${pret.id_pret}"></span></p>
+            </div>
+
+            <div class="detail-group">
+                <p><strong>Utilisateur :</strong> <span th:text="${pret.user.nom}"></span></p>
+            </div>
+
+            <div class="detail-group">
+                <p><strong>Livre :</strong> <span th:text="${pret.livre.titre}"></span></p>
+            </div>
+
+            <div class="detail-group">
+                <p><strong>Nombre :</strong> <span th:text="${pret.nbr}"></span></p>
+            </div>
+
+            <div class="detail-group">
+                <p><strong>Sur place :</strong>
+                    <span th:class="${pret.isSurPlace} ? 'status-oui' : 'status-non'"
+                        th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></span>
+                </p>
+            </div>
+
+            <div class="detail-group">
+                <p><strong>Date du prêt :</strong> <span th:text="${pret.datePret}"></span></p>
+            </div>
+
+            <!-- Actions -->
+            <div class="detail-actions">
+                <a th:href="@{/prets}" class="btn-back">Retour à la liste</a>
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 
 </html>

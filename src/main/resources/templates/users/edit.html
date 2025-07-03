@@ -2,20 +2,71 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modifier utilisateur</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Modifier utilisateur</h1>
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{|/users/edit/${user.id}|}" th:object="${user}" method="post">
-        <label>Nom: <input type="text" th:field="*{name}" /></label><br /><br />
-        <label>Email: <input type="email" th:field="*{email}" /></label><br /><br />
-        <label>Date de naissance : <input type="date" th:field="*{date_naissance}" /></label>
-        <button type="submit">Enregistrer</button>
-    </form>
+    <div class="main-content">
+        <h1>Modifier utilisateur</h1>
 
-    <a th:href="@{/users}">Retour à la liste</a>
+        <div class="form-container">
+            <form th:action="@{|/users/edit/${user.id}|}" th:object="${user}" method="post">
+
+                <div class="form-group">
+                    <label>Nom :</label>
+                    <input type="text" th:field="*{nom}" required class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Prénom :</label>
+                    <input type="text" th:field="*{prenom}" required class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Email :</label>
+                    <input type="email" th:field="*{email}" required class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Mot de passe :</label>
+                    <input type="password" th:field="*{password}" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Contact :</label>
+                    <input type="text" th:field="*{contact}" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Date d'adhésion :</label>
+                    <input type="date" th:field="*{dateAdhesion}" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Date de naissance :</label>
+                    <input type="date" th:field="*{date_naissance}" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Adhérent :</label>
+                    <select th:field="*{adherent}" class="form-select">
+                        <option th:each="a : ${adherents}" th:value="${a.id}" th:text="${a.nom}"></option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/users}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
 </body>
 
 </html>

@@ -2,37 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des Catégories</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des Catégories</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a th:href="@{/categories/create}">Ajouter une catégorie</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="cat : ${categories}">
-                <td th:text="${cat.id}">1</td>
-                <td th:text="${cat.nom}">Science</td>
-                <td>
-                    <a th:href="@{'/categories/edit/' + ${cat.id}}">Modifier</a> |
-                    <a th:href="@{'/categories/delete/' + ${cat.id}}"
-                        onclick="return confirm('Supprimer cette catégorie ?');">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des Catégories</h1>
+            <a th:href="@{/categories/create}" class="btn-create">Ajouter une catégorie</a>
+        </div>
 
-    <br />
-    <a th:href="@{/livres}">Retour aux livres</a>
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cat : ${categories}">
+                        <td th:text="${cat.id}"></td>
+                        <td th:text="${cat.nom}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/categories/edit/{id}(id=${cat.id})}" class="btn-action btn-edit">Modifier</a>
+                            <form th:action="@{/categories/delete/{id}(id=${cat.id})}" method="post"
+                                style="display:inline">
+                                <button type="submit" class="btn-action btn-delete"
+                                    onclick="return confirm('Supprimer cette catégorie ?');">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(categories)}">
+                        <td colspan="3" class="empty-state">Aucune catégorie trouvée.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+        <a th:href="@{/livres}" class="btn-back">Retour aux livres</a>
+    </div>
 </body>
 
 </html>

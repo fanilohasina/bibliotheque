@@ -1,0 +1,242 @@
+:root {
+    --sidebar-width: 300px;
+    --sidebar-collapsed-width: 60px;
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --hover-color: #ecf0f1;
+    --text-color: #ecf0f1;
+    --text-dark: #2c3e50;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Menu principal */
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    transition: var(--transition);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Header du menu avec logo */
+.menu-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.logo i {
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+.logo h2 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* Liste de navigation */
+.menu-list {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu-list li {
+    margin: 0;
+}
+
+.menu-list a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+    position: relative;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.menu-list a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.menu-list a.active {
+    background-color: rgba(52, 152, 219, 0.2);
+    border-left-color: var(--accent-color);
+}
+
+.menu-list i {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+    color: var(--accent-color);
+    transition: var(--transition);
+}
+
+.menu-list span {
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+/* Décalage du contenu principal */
+.main-content-offset {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+/* Style pour le scrollbar du menu */
+.sidebar-menu::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+/* Responsive - Écrans moyens */
+@media (max-width: 1024px) {
+    .sidebar-menu {
+        width: 250px;
+    }
+
+    .main-content-offset {
+        margin-left: 250px;
+    }
+}
+
+/* Responsive - Mobile (menu réduit avec icônes seulement) */
+@media (max-width: 768px) {
+    .sidebar-menu {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .menu-header {
+        padding: 15px 10px;
+        text-align: center;
+    }
+
+    .logo h2 {
+        display: none;
+    }
+
+    .logo {
+        justify-content: center;
+        gap: 0;
+    }
+
+    .menu-list a {
+        padding: 15px 10px;
+        justify-content: center;
+        gap: 0;
+    }
+
+    .menu-list span {
+        display: none;
+    }
+
+    .menu-list i {
+        font-size: 20px;
+    }
+
+    .main-content-offset {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+
+    /* Tooltip pour les icônes sur mobile */
+    .menu-list a {
+        position: relative;
+    }
+
+    .menu-list a::after {
+        content: attr(title);
+        position: absolute;
+        left: 70px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--primary-color);
+        color: var(--text-color);
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+        z-index: 1001;
+        box-shadow: var(--shadow);
+    }
+
+    .menu-list a:hover::after {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* Animation d'entrée */
+/* @keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+} */
+
+.sidebar-menu {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+/* États actifs pour une meilleure UX */
+.menu-list a:active {
+    transform: translateX(3px);
+}
+
+/* Focus pour l'accessibilité */
+.menu-list a:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+}

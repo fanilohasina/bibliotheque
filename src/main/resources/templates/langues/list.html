@@ -2,38 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des Langues</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Langues</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a th:href="@{/langues/create}">Créer une langue</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="langue : ${langues}">
-                <td th:text="${langue.id}"></td>
-                <td>
-                    <a th:href="@{'/langues/' + ${langue.id}}" th:text="${langue.nom}"></a>
-                </td>
-                <td>
-                    <a th:href="@{'/langues/edit/' + ${langue.id}}">Modifier</a>
-                    <form th:action="@{'/langues/delete/' + ${langue.id}}" method="post" style="display:inline">
-                        <button type="submit" onclick="return confirm('Supprimer cette langue ?')">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Langues</h1>
+            <a th:href="@{/langues/create}" class="btn-create">Créer une langue</a>
+        </div>
 
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="langue : ${langues}">
+                        <td th:text="${langue.id}"></td>
+                        <td>
+                            <a th:href="@{/langues/{id}(id=${langue.id})}" th:text="${langue.nom}"></a>
+                        </td>
+                        <td class="actions-cell">
+                            <a th:href="@{/langues/edit/{id}(id=${langue.id})}" class="btn-action btn-edit">Modifier</a>
+                            <form th:action="@{/langues/delete/{id}(id=${langue.id})}" method="post"
+                                style="display:inline">
+                                <button type="submit" class="btn-action btn-delete"
+                                    onclick="return confirm('Supprimer cette langue ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(langues)}">
+                        <td colspan="3" class="empty-state">Aucune langue trouvée.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

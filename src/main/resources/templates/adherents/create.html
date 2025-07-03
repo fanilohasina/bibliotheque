@@ -2,29 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un Adhérent</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}">
 </head>
 
 <body>
-    <h1>Créer un nouvel Adhérent</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{/adherents/create}" method="post" th:object="${adherent}">
-        <label>Nom :</label>
-        <input type="text" th:field="*{nom}" required /><br><br>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-        <label>Quota :</label>
-        <select name="quotaId" required>
-            <option value="">-- Sélectionner un quota --</option>
-            <option th:each="q : ${quotas}" th:value="${q.id_quota}"
-                th:text="'Max Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
-            </option>
-        </select><br><br>
+        <h1>Créer un nouvel adhérent</h1>
 
-        <button type="submit">Créer</button>
-    </form>
+        <!-- Container du formulaire -->
+        <div class="form-container">
+            <form th:action="@{/adherents/create}" method="post" th:object="${adherent}">
 
-    <br>
-    <a th:href="@{/adherents}">← Retour à la liste</a>
+                <!-- Champ Nom -->
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" placeholder="Nom de l'adhérent" required />
+                    <div class="error-message">Veuillez entrer un nom valide</div>
+                </div>
+
+                <!-- Champ Quota -->
+                <div class="form-group">
+                    <label for="quotaId">Quota :</label>
+                    <select id="quotaId" name="quotaId" required>
+                        <option value="">-- Sélectionner un quota --</option>
+                        <option th:each="q : ${quotas}" th:value="${q.id_quota}"
+                            th:text="'Max Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
+                        </option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un quota</div>
+                </div>
+
+                <!-- Actions du formulaire -->
+                <div class="form-actions">
+                    <a th:href="@{/adherents}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Créer l’adhérent</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

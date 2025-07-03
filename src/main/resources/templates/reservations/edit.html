@@ -2,44 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modifier la réservation</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Modifier la réservation</h1>
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{'/reservations/edit/' + ${reservation.id_reservation}}" method="post" th:object="${reservation}">
-        <label for="user">Utilisateur :</label>
-        <select name="userId" id="user" required>
-            <option value="" disabled>-- Choisir un utilisateur --</option>
-            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
-                th:selected="${u.id == reservation.user.id}">
-            </option>
-        </select>
-        <br /><br />
+    <div class="main-content">
+        <h1>Modifier la réservation</h1>
 
-        <label for="livre">Livre :</label>
-        <select name="livreId" id="livre" required>
-            <option value="" disabled>-- Choisir un livre --</option>
-            <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
-                th:selected="${l.id == reservation.livre.id}">
-            </option>
-        </select>
-        <br /><br />
+        <div class="form-container">
+            <form th:action="@{'/reservations/edit/' + ${reservation.id_reservation}}" method="post"
+                th:object="${reservation}">
+                <div class="form-group">
+                    <label for="user">Utilisateur :</label>
+                    <select name="userId" id="user" required class="form-select">
+                        <option value="" disabled>-- Choisir un utilisateur --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
+                            th:selected="${u.id == reservation.user.id}"></option>
+                    </select>
+                </div>
 
-        <label for="nbr">Nombre :</label>
-        <input type="number" id="nbr" name="nbr" th:value="${reservation.nbr}" min="1" required />
-        <br /><br />
+                <div class="form-group">
+                    <label for="livre">Livre :</label>
+                    <select name="livreId" id="livre" required class="form-select">
+                        <option value="" disabled>-- Choisir un livre --</option>
+                        <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
+                            th:selected="${l.id == reservation.livre.id}"></option>
+                    </select>
+                </div>
 
-        <label for="isSurPlace">Sur place :</label>
-        <input type="checkbox" id="isSurPlace" name="isSurPlace" th:checked="${reservation.isSurPlace}" />
-        <br /><br />
+                <div class="form-group">
+                    <label for="nbr">Nombre :</label>
+                    <input type="number" id="nbr" name="nbr" th:value="${reservation.nbr}" min="1" required
+                        class="form-input" />
+                </div>
 
-        <button type="submit">Modifier</button>
-    </form>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="isSurPlace" name="isSurPlace" th:checked="${reservation.isSurPlace}" />
+                    <label for="isSurPlace" class="checkbox-label">Sur place</label>
+                </div>
 
-    <br />
-    <a th:href="@{/reservations}">Retour à la liste</a>
+                <div class="form-actions">
+                    <a th:href="@{/reservations}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

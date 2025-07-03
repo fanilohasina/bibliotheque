@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Liste des Pénalités</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
+</head>
+
+<body>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des Pénalités</h1>
+            <a th:href="@{/penalites/create}" class="btn-create">Créer une nouvelle pénalité</a>
+        </div>
+
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilisateur</th>
+                        <th>Date Action</th>
+                        <th>Nombre de jours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="penalite : ${penalites}">
+                        <td th:text="${penalite.idPenalite}"></td>
+                        <td th:text="${penalite.user.nom}"></td>
+                        <td
+                            th:text="${penalite.dateAction != null ? #temporals.format(penalite.dateAction, 'dd/MM/yyyy') : ''}">
+                        </td>
+                        <td th:text="${penalite.nbrJour}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/penalites/edit/{id}(id=${penalite.idPenalite})}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <a th:href="@{/penalites/delete/{id}(id=${penalite.idPenalite})}"
+                                class="btn-action btn-delete"
+                                onclick="return confirm('Confirmer la suppression ?')">Supprimer</a>
+                            <a th:href="@{/penalites/detail/{id}(id=${penalite.idPenalite})}"
+                                class="btn-action btn-detail">Détails</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(penalites)}">
+                        <td colspan="5" class="empty-state">Aucune pénalité trouvée.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>

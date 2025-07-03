@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -19,17 +18,14 @@ public class MembreController {
     private final LivreService livreService;
     private final PretService pretService;
     private final ReservationService reservationService;
-    private final UserService userService;
 
     public MembreController(
             LivreService livreService,
             PretService pretService,
-            ReservationService reservationService,
-            UserService userService) {
+            ReservationService reservationService) {
         this.livreService = livreService;
         this.pretService = pretService;
         this.reservationService = reservationService;
-        this.userService = userService;
     }
 
     @GetMapping

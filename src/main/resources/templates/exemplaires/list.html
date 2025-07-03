@@ -2,38 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des exemplaires</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des exemplaires</h1>
-    <a th:href="@{/exemplaires/create}">Ajouter un exemplaire</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Livre</th>
-                <th>Date action</th>
-                <th>Action</th>
-                <th>Nombre</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="ex : ${exemplaires}">
-                <td th:text="${ex.id_exemplaire}"></td>
-                <td th:text="${ex.livre.titre}"></td>
-                <td th:text="${ex.dateAction}"></td>
-                <td th:text="${ex.action} ? 'Ajout' : 'Retrait'"></td>
-                <td th:text="${ex.nbr}"></td>
-                <td>
-                    <a th:href="@{'/exemplaires/' + ${ex.id_exemplaire}}">Détail</a>
-                    <a th:href="@{'/exemplaires/edit/' + ${ex.id_exemplaire}}">Modifier</a>
-                    <a th:href="@{'/exemplaires/delete/' + ${ex.id_exemplaire}}">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des exemplaires</h1>
+            <a th:href="@{/exemplaires/create}" class="btn-create">Ajouter un exemplaire</a>
+        </div>
+
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Livre</th>
+                        <th>Date action</th>
+                        <th>Action</th>
+                        <th>Nombre</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="ex : ${exemplaires}">
+                        <td th:text="${ex.id_exemplaire}"></td>
+                        <td th:text="${ex.livre.titre}"></td>
+                        <td th:text="${#temporals.format(ex.dateAction, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${ex.action} ? 'Ajout' : 'Retrait'"></td>
+                        <td th:text="${ex.nbr}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/exemplaires/{id}(id=${ex.id_exemplaire})}"
+                                class="btn-action btn-detail">Détail</a>
+                            <a th:href="@{/exemplaires/edit/{id}(id=${ex.id_exemplaire})}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <form th:action="@{/exemplaires/delete/{id}(id=${ex.id_exemplaire})}" method="post"
+                                style="display:inline">
+                                <button type="submit" class="btn-action btn-delete"
+                                    onclick="return confirm('Supprimer cet exemplaire ?');">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(exemplaires)}">
+                        <td colspan="6" class="empty-state">Aucun exemplaire trouvé.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

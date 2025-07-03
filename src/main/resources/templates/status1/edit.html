@@ -2,20 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modifier un statut</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Modifier un statut</h1>
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{'/status1/edit/' + ${status.id_status1}}" method="post" th:object="${status}">
-        <label>Nom :</label>
-        <input type="text" th:field="*{nom}" required />
-        <br><br>
-        <button type="submit">Mettre à jour</button>
-    </form>
+    <div class="main-content">
+        <h1>Modifier un statut</h1>
 
-    <a th:href="@{/status1}">Retour à la liste</a>
+        <div class="form-container">
+            <form th:action="@{'/status1/edit/' + ${status.id_status1}}" method="post" th:object="${status}">
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" required class="form-input" />
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/status1}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

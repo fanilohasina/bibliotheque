@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modifier une Pénalité</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <div class="main-content">
+        <h1>Modifier une Pénalité</h1>
+
+        <div class="form-container">
+            <form th:action="@{/penalites/update}" method="post" th:object="${penalite}">
+                <input type="hidden" name="idPenalite" th:value="*{idPenalite}" />
+
+                <div class="form-group">
+                    <label for="user">Utilisateur :</label>
+                    <select id="user" name="user.id" required class="form-select">
+                        <option value="">-- Sélectionner un utilisateur --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:selected="${u.id} == ${penalite.user.id}"
+                            th:text="${u.nom}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un utilisateur</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateAction">Date d'action :</label>
+                    <input type="date" id="dateAction" name="dateAction" th:value="*{dateAction}" required
+                        class="form-input" />
+                    <div class="error-message">Veuillez sélectionner une date valide</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nbrJour">Nombre de jours :</label>
+                    <input type="number" id="nbrJour" name="nbrJour" th:value="*{nbrJour}" required class="form-input"
+                        min="1" />
+                    <div class="error-message">Veuillez entrer un nombre valide</div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/penalites}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

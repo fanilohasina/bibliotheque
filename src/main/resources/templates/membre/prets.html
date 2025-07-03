@@ -1,32 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes prêts</title>
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}">
+
 </head>
 
 <body>
-    <h1>Mes prêts</h1>
+    <div th:replace="fragments/menu-membre :: menu"></div>
 
-    <form method="get" th:action="@{/membre/prets}">
-        <input type="text" name="search" placeholder="Titre du livre">
-        <button type="submit">Filtrer</button>
-    </form>
+    <div class="main-content">
+        <h1>Mes prêts</h1>
 
-    <table border="1">
-        <tr>
-            <th>Livre</th>
-            <th>Nombre</th>
-            <th>Date</th>
-            <th>Sur place</th>
-        </tr>
-        <tr th:each="pret : ${prets}">
-            <td th:text="${pret.livre.titre}"></td>
-            <td th:text="${pret.nbr}"></td>
-            <td th:text="${pret.datePret}"></td>
-            <td th:text="${pret.isSurPlace ? 'Oui' : 'Non'}"></td>
-        </tr>
-    </table>
+        <form method="get" th:action="@{/membre/prets}" class="search-bar">
+            <select name="searchType">
+                <option value="titre">Titre</option>
+                <option value="date">Date</option>
+            </select>
+            <input type="text" name="search" placeholder="Rechercher...">
+            <button type="submit">Filtrer</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>Livre</th>
+                <th>Nombre</th>
+                <th>Date</th>
+                <th>Sur place</th>
+            </tr>
+            <tr th:each="pret : ${prets}">
+                <td th:text="${pret.livre.titre}"></td>
+                <td th:text="${pret.nbr}"></td>
+                <td th:text="${pret.datePret}"></td>
+                <td th:text="${pret.isSurPlace ? 'Oui' : 'Non'}"></td>
+            </tr>
+        </table>
+    </div>
 </body>
 
 </html>

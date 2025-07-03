@@ -2,44 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Liste des Quotas</title>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Liste des Quotas</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des Quotas</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a href="/quotas/create">Créer un nouveau quota</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nb livres max prêt</th>
-                <th>Nb jours max prêt</th>
-                <th>Nb jours avant prolongement</th>
-                <th>Nb prolongements max</th>
-                <th>Nb jours max prolongement</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="quota : ${quotas}">
-                <td th:text="${quota.id_quota}">1</td>
-                <td th:text="${quota.nbr_livre_max_pret}">3</td>
-                <td th:text="${quota.nbr_jour_max_pret}">15</td>
-                <td th:text="${quota.nbr_jour_avant_prologement}">2</td>
-                <td th:text="${quota.nbr_prologement_max}">1</td>
-                <td th:text="${quota.nbr_jour_max_prolongement}">7</td>
-                <td>
-                    <a th:href="@{'/quotas/detail/' + ${quota.id_quota}}">Voir</a> |
-                    <a th:href="@{/quotas/edit/{id}(id=${quota.id_quota})}">Modifier</a> |
-                    <a th:href="@{/quotas/delete/{id}(id=${quota.id_quota})}"
-                        onclick="return confirm('Supprimer ce quota ?');">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des Quotas</h1>
+            <a th:href="@{/quotas/create}" class="btn-create">Créer un nouveau quota</a>
+        </div>
+
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nb livres max prêt</th>
+                        <th>Nb jours max prêt</th>
+                        <th>Nb jours avant prolongement</th>
+                        <th>Nb prolongements max</th>
+                        <th>Nb jours max prolongement</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="quota : ${quotas}">
+                        <td th:text="${quota.id_quota}"></td>
+                        <td th:text="${quota.nbr_livre_max_pret}"></td>
+                        <td th:text="${quota.nbr_jour_max_pret}"></td>
+                        <td th:text="${quota.nbr_jour_avant_prologement}"></td>
+                        <td th:text="${quota.nbr_prologement_max}"></td>
+                        <td th:text="${quota.nbr_jour_max_prolongement}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/quotas/detail/{id}(id=${quota.id_quota})}"
+                                class="btn-action btn-detail">Voir</a>
+                            <a th:href="@{/quotas/edit/{id}(id=${quota.id_quota})}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <a th:href="@{/quotas/delete/{id}(id=${quota.id_quota})}" class="btn-action btn-delete"
+                                onclick="return confirm('Supprimer ce quota ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(quotas)}">
+                        <td colspan="7" class="empty-state">
+                            <h3>Aucun quota trouvé</h3>
+                            <p>Il n'y a actuellement aucun quota enregistré.<br>
+                                Cliquez sur "Créer un nouveau quota" pour commencer.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

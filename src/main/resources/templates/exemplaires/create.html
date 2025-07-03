@@ -2,33 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Créer un exemplaire</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Créer un exemplaire</h1>
-    <form th:action="@{/exemplaires/create}" th:object="${exemplaire}" method="post">
-        <label>Livre :</label>
-        <select th:field="*{livre}" required>
-            <option th:each="livre : ${livres}" th:value="${livre.id}" th:text="${livre.titre}">
-            </option>
-        </select>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-        <label>Date Action :</label>
-        <input type="date" th:field="*{dateAction}" required><br>
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Créer un exemplaire</h1>
 
-        <label>Action :</label>
-        <select th:field="*{action}">
-            <option th:value="true">Ajout</option>
-            <option th:value="false">Retrait</option>
-        </select><br>
+        <div class="form-container">
+            <form th:action="@{/exemplaires/create}" th:object="${exemplaire}" method="post">
 
-        <label>Nombre :</label>
-        <input type="number" th:field="*{nbr}" required><br>
+                <div class="form-group">
+                    <label for="livre">Livre :</label>
+                    <select id="livre" th:field="*{livre}" required>
+                        <option value="">-- Sélectionner un livre --</option>
+                        <option th:each="livre : ${livres}" th:value="${livre.id}" th:text="${livre.titre}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un livre</div>
+                </div>
 
-        <button type="submit">Enregistrer</button>
-    </form>
-    <a th:href="@{/exemplaires}">Retour</a>
+                <div class="form-group">
+                    <label for="dateAction">Date Action :</label>
+                    <input type="date" id="dateAction" th:field="*{dateAction}" required />
+                    <div class="error-message">Veuillez sélectionner une date valide</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="action">Action :</label>
+                    <select id="action" th:field="*{action}" required>
+                        <option value="">-- Choisir une action --</option>
+                        <option th:value="true">Ajout</option>
+                        <option th:value="false">Retrait</option>
+                    </select>
+                    <div class="error-message">Veuillez choisir une action</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nbr">Nombre :</label>
+                    <input type="number" id="nbr" th:field="*{nbr}" min="1" required />
+                    <div class="error-message">Veuillez entrer un nombre valide</div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/exemplaires}" class="btn-back">Retour</a>
+                    <button type="submit" class="btn-submit">Enregistrer</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

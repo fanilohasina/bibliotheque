@@ -2,45 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Créer un Livre</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
 </head>
 
 <body>
-    <h1>Créer un Livre</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{/livres/create}" th:object="${livre}" method="post">
-        <label>Titre:</label>
-        <input type="text" th:field="*{titre}" required /><br />
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Créer un Livre</h1>
 
-        <label>Date de publication:</label>
-        <input type="date" th:field="*{dateDePublication}" required /><br />
+        <div class="form-container">
+            <form th:action="@{/livres/create}" th:object="${livre}" method="post">
 
-        <label>Date d'entrée:</label>
-        <input type="date" th:field="*{dateDentree}" required /><br />
+                <div class="form-group">
+                    <label for="titre">Titre :</label>
+                    <input type="text" id="titre" th:field="*{titre}" placeholder="Titre du livre" required />
+                    <div class="error-message">Veuillez entrer un titre</div>
+                </div>
 
-        <label>Categorie Age:</label>
-        <input type="number" th:field="*{categorieAge}" required /><br />
+                <div class="form-group">
+                    <label for="dateDePublication">Date de publication :</label>
+                    <input type="date" id="dateDePublication" th:field="*{dateDePublication}" required />
+                    <div class="error-message">Veuillez entrer une date valide</div>
+                </div>
 
-        <label>Auteur:</label>
-        <select th:field="*{auteur}" required>
-            <option th:each="a : ${auteurs}" th:value="${a.id}" th:text="${a.nom}"></option>
-        </select><br />
+                <div class="form-group">
+                    <label for="dateDentree">Date d'entrée :</label>
+                    <input type="date" id="dateDentree" th:field="*{dateDentree}" required />
+                    <div class="error-message">Veuillez entrer une date valide</div>
+                </div>
 
-        <label>Langue:</label>
-        <select th:field="*{langue}" required>
-            <option th:each="l : ${langues}" th:value="${l.id}" th:text="${l.nom}"></option>
-        </select><br />
+                <div class="form-group">
+                    <label for="categorieAge">Catégorie Age :</label>
+                    <input type="number" id="categorieAge" th:field="*{categorieAge}" placeholder="Âge recommandé"
+                        required />
+                    <div class="error-message">Veuillez entrer un âge valide</div>
+                </div>
 
-        <label>Catégories:</label><br />
-        <div th:each="cat : ${categories}">
-            <input type="checkbox" th:field="*{categories}" th:value="${cat.id}" />
-            <span th:text="${cat.nom}"></span><br />
+                <div class="form-group">
+                    <label for="auteur">Auteur :</label>
+                    <select id="auteur" th:field="*{auteur}" required>
+                        <option value="">-- Sélectionner un auteur --</option>
+                        <option th:each="a : ${auteurs}" th:value="${a.id}" th:text="${a.nom}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un auteur</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="langue">Langue :</label>
+                    <select id="langue" th:field="*{langue}" required>
+                        <option value="">-- Sélectionner une langue --</option>
+                        <option th:each="l : ${langues}" th:value="${l.id}" th:text="${l.nom}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner une langue</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catégories :</label>
+                    <div class="checkbox-group" th:each="cat : ${categories}">
+                        <input type="checkbox" th:field="*{categories}" th:value="${cat.id}" id="cat__${cat.id}" />
+                        <label th:for="'cat__' + ${cat.id}" th:text="${cat.nom}"></label><br />
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/livres}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Enregistrer</button>
+                </div>
+
+            </form>
         </div>
-
-        <button type="submit">Enregistrer</button>
-    </form>
-
-    <a th:href="@{/livres}">Retour à la liste</a>
+    </div>
 </body>
 
 </html>

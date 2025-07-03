@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Créer une Pénalité</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
+</head>
+
+<body>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Créer une Pénalité</h1>
+
+        <div class="form-container">
+            <form th:action="@{/penalites/save}" method="post" th:object="${penalite}">
+                <div class="form-group">
+                    <label for="user">Utilisateur :</label>
+                    <select id="user" name="user.id" required>
+                        <option value="">-- Sélectionner un utilisateur --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"></option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un utilisateur</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateAction">Date d'action :</label>
+                    <input type="date" id="dateAction" name="dateAction" th:value="*{dateAction}" required />
+                    <div class="error-message">Veuillez sélectionner une date valide</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nbrJour">Nombre de jours :</label>
+                    <input type="number" id="nbrJour" name="nbrJour" th:value="*{nbrJour}" min="1" required />
+                    <div class="error-message">Veuillez entrer un nombre valide</div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/penalites}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Créer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

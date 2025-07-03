@@ -2,34 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des statuts</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des statuts</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a th:href="@{/status1/create}">Ajouter un statut</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="s : ${statusList}">
-                <td th:text="${s.id_status1}"></td>
-                <td th:text="${s.nom}"></td>
-                <td>
-                    <a th:href="@{'/status1/' + ${s.id_status1}}">Détail</a> |
-                    <a th:href="@{'/status1/edit/' + ${s.id_status1}}">Modifier</a> |
-                    <a th:href="@{'/status1/delete/' + ${s.id_status1}}"
-                        onclick="return confirm('Confirmer la suppression ?')">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Contenu principal -->
+    <div class="main-content">
+
+        <!-- En-tête -->
+        <div class="page-header">
+            <h1>Liste des statuts</h1>
+            <a th:href="@{/status1/create}" class="btn-create">Ajouter un statut</a>
+        </div>
+
+        <!-- Tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="s : ${statusList}">
+                        <td th:text="${s.id_status1}"></td>
+                        <td th:text="${s.nom}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{'/status1/' + ${s.id_status1}}" class="btn-action btn-detail">Détail</a>
+                            <a th:href="@{'/status1/edit/' + ${s.id_status1}}" class="btn-action btn-edit">Modifier</a>
+                            <a th:href="@{'/status1/delete/' + ${s.id_status1}}" class="btn-action btn-delete"
+                                onclick="return confirm('Confirmer la suppression ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(statusList)}">
+                        <td colspan="3" class="empty-state">
+                            <h3>Aucun statut trouvé</h3>
+                            <p>Il n'y a actuellement aucun statut enregistré.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 
 </html>

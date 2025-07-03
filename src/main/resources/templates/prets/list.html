@@ -2,44 +2,71 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des prêts</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}">
 </head>
 
 <body>
-    <h1>Liste des prêts</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a th:href="@{/prets/create}">Créer un nouveau prêt</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Utilisateur</th>
-                <th>Livre</th>
-                <th>Nombre</th>
-                <th>Sur place</th>
-                <th>Date du prêt</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="pret : ${prets}">
-                <td th:text="${pret.id_pret}"></td>
-                <td th:text="${pret.user.nom}"></td>
-                <td th:text="${pret.livre.titre}"></td>
-                <td th:text="${pret.nbr}"></td>
-                <td th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></td>
-                <td th:text="${pret.datePret}"></td>
-                <td>
-                    <a th:href="@{/prets/detail/{id}(id=${pret.id_pret})}">Détails</a> |
-                    <a th:href="@{/prets/edit/{id}(id=${pret.id_pret})}">Modifier</a> |
-                    <a th:href="@{/prets/delete/{id}(id=${pret.id_pret})}"
-                        onclick="return confirm('Supprimer ce prêt ?');">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des prêts</h1>
+            <a th:href="@{/prets/create}" class="btn-create">Créer un nouveau prêt</a>
+        </div>
 
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilisateur</th>
+                        <th>Livre</th>
+                        <th>Nombre</th>
+                        <th>Sur place</th>
+                        <th>Date du prêt</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pret : ${prets}">
+                        <td th:text="${pret.id_pret}"></td>
+                        <td th:text="${pret.user.nom}"></td>
+                        <td th:text="${pret.livre.titre}"></td>
+                        <td th:text="${pret.nbr}"></td>
+                        <td>
+                            <span th:class="${pret.isSurPlace} ? 'badge-oui' : 'badge-non'"
+                                th:text="${pret.isSurPlace} ? 'Oui' : 'Non'"></span>
+                        </td>
+                        <td th:text="${#temporals.format(pret.datePret, 'dd/MM/yyyy')}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/prets/detail/{id}(id=${pret.id_pret})}"
+                                class="btn-action btn-detail">Détails</a>
+                            <a th:href="@{/prets/edit/{id}(id=${pret.id_pret})}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <a th:href="@{/prets/delete/{id}(id=${pret.id_pret})}" class="btn-action btn-delete"
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce prêt ?');">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- État vide si aucun prêt -->
+            <div th:if="${#lists.isEmpty(prets)}" class="empty-state">
+                <h3>Aucun prêt trouvé</h3>
+                <p>Il n'y a actuellement aucun prêt enregistré dans le système.<br>
+                    Cliquez sur "Créer un nouveau prêt" pour commencer.</p>
+            </div>
+        </div>
+
+    </div>
 </body>
 
 </html>

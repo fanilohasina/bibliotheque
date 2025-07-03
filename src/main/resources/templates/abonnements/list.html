@@ -2,38 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des Abonnements</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-    <h1>Liste des Abonnements</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <a th:href="@{/abonnements/create}">Ajouter un abonnement</a>
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Utilisateur</th>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="abo : ${abonnements}">
-                <td th:text="${abo.id_abonnement}">ID</td>
-                <td th:text="${abo.user.nom}">Nom utilisateur</td>
-                <td th:text="${abo.date_debut}">Date début</td>
-                <td th:text="${abo.date_fin}">Date fin</td>
-                <td>
-                    <a th:href="@{'/abonnements/edit/' + ${abo.id_abonnement}}">Modifier</a> |
-                    <a th:href="@{'/abonnements/delete/' + ${abo.id_abonnement}}"
-                        onclick="return confirm('Supprimer cet abonnement ?')">Supprimer</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- En-tête de la page -->
+        <div class="page-header">
+            <h1>Liste des Abonnements</h1>
+            <a th:href="@{/abonnements/create}" class="btn-create">Ajouter un abonnement</a>
+        </div>
+
+        <!-- Container du tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilisateur</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="abo : ${abonnements}">
+                        <td th:text="${abo.id_abonnement}"></td>
+                        <td th:text="${abo.user.nom}"></td>
+                        <td th:text="${#temporals.format(abo.date_debut, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${#temporals.format(abo.date_fin, 'dd/MM/yyyy')}"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{/abonnements/edit/{id}(id=${abo.id_abonnement})}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <a th:href="@{/abonnements/delete/{id}(id=${abo.id_abonnement})}"
+                                class="btn-action btn-delete"
+                                onclick="return confirm('Supprimer cet abonnement ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- État vide si aucun abonnement -->
+            <div th:if="${#lists.isEmpty(abonnements)}" class="empty-state">
+                <h3>Aucun abonnement trouvé</h3>
+                <p>Il n'y a actuellement aucun abonnement enregistré.<br>
+                    Cliquez sur "Ajouter un abonnement" pour commencer.</p>
+            </div>
+        </div>
+
+    </div>
 </body>
 
 </html>

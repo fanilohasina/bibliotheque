@@ -2,36 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modifier StatusPret</title>
+    <link rel="stylesheet" th:href="@{/css/pages/edit.css}" />
 </head>
 
 <body>
-    <h1>Modifier StatusPret</h1>
-    <form th:action="@{/statusprets/edit}" method="post" th:object="${statusPret}">
-        <input type="hidden" th:field="*{id_status_pret}" />
+    <div th:replace="fragments/menu :: menu"></div>
 
-        <label for="idPret">Prêt :</label>
-        <select id="idPret" name="idPret" required>
-            <option th:each="pret : ${prets}" th:value="${pret.id_pret}"
-                th:text="${pret.id_pret} + ' - ' + ${pret.user.nom}"
-                th:selected="${pret.id_pret == statusPret.pret.id_pret}"></option>
-        </select>
-        <br />
+    <div class="main-content">
+        <h1>Modifier StatusPret</h1>
 
-        <label for="idStatus1">Status :</label>
-        <select id="idStatus1" name="idStatus1" required>
-            <option th:each="status1 : ${status1s}" th:value="${status1.id_status1}" th:text="${status1.nom}"
-                th:selected="${status1.id_status1 == statusPret.status1.id_status1}"></option>
-        </select>
-        <br />
+        <div class="form-container">
+            <form th:action="@{/statusprets/edit}" method="post" th:object="${statusPret}">
+                <input type="hidden" th:field="*{id_status_pret}" />
 
-        <label for="dateAction">Date Action :</label>
-        <input type="date" id="dateAction" name="dateAction" th:field="*{dateAction}" required />
-        <br />
+                <div class="form-group">
+                    <label for="idPret">Prêt :</label>
+                    <select id="idPret" name="idPret" required class="form-select">
+                        <option value="" disabled>-- Sélectionner un prêt --</option>
+                        <option th:each="pret : ${prets}" th:value="${pret.id_pret}"
+                            th:text="${pret.id_pret} + ' - ' + ${pret.user.nom}"
+                            th:selected="${pret.id_pret == statusPret.pret.id_pret}">
+                        </option>
+                    </select>
+                </div>
 
-        <button type="submit">Enregistrer</button>
-    </form>
-    <a th:href="@{/statusprets}">Retour à la liste</a>
+                <div class="form-group">
+                    <label for="idStatus1">Status :</label>
+                    <select id="idStatus1" name="idStatus1" required class="form-select">
+                        <option value="" disabled>-- Sélectionner un status --</option>
+                        <option th:each="status1 : ${status1s}" th:value="${status1.id_status1}"
+                            th:text="${status1.nom}"
+                            th:selected="${status1.id_status1 == statusPret.status1.id_status1}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateAction">Date Action :</label>
+                    <input type="date" id="dateAction" name="dateAction" th:field="*{dateAction}" required
+                        class="form-input" />
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/statusprets}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

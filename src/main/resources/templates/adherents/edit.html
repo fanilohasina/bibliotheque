@@ -2,33 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier un Adhérent</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}">
 </head>
 
 <body>
-    <h1>Modifier l’Adhérent</h1>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-    <form th:action="@{/adherents/edit}" method="post" th:object="${adherent}">
-        <input type="hidden" th:field="*{id}" />
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-        <label>Nom :</label>
-        <input type="text" th:field="*{nom}" required /><br><br>
+        <h1>Modifier l’adhérent</h1>
 
-        <label>Quota :</label>
-        <select name="quotaId" required>
-            <option value="">-- Choisir un quota --</option>
-            <option th:each="q : ${quotas}" th:value="${q.id_quota}"
-                th:selected="${adherent.quota != null and q.id_quota == adherent.quota.id_quota}"
-                th:text="'Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
-            </option>
-        </select>
+        <!-- Container du formulaire -->
+        <div class="form-container">
+            <form th:action="@{/adherents/edit}" method="post" th:object="${adherent}">
+                <input type="hidden" th:field="*{id}" />
 
+                <!-- Champ Nom -->
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" th:field="*{nom}" placeholder="Nom de l'adhérent" required />
+                    <div class="error-message">Veuillez entrer un nom valide</div>
+                </div>
 
-        <button type="submit">Enregistrer</button>
-    </form>
+                <!-- Champ Quota -->
+                <div class="form-group">
+                    <label for="quotaId">Quota :</label>
+                    <select id="quotaId" name="quotaId" required>
+                        <option value="">-- Choisir un quota --</option>
+                        <option th:each="q : ${quotas}" th:value="${q.id_quota}"
+                            th:selected="${adherent.quota != null and q.id_quota == adherent.quota.id_quota}"
+                            th:text="'Livres: ' + ${q.nbr_livre_max_pret} + ', Jours: ' + ${q.nbr_jour_max_pret}">
+                        </option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un quota</div>
+                </div>
 
-    <br>
-    <a th:href="@{/adherents}">← Retour à la liste</a>
+                <!-- Actions du formulaire -->
+                <div class="form-actions">
+                    <a th:href="@{/adherents}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour l’adhérent</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

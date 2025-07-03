@@ -2,41 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-   <title>Liste des Adhérents</title>
    <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <title>Liste des Adhérents</title>
+   <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
 </head>
 
 <body>
-   <h1>Liste des Adhérents</h1>
+   <!-- Menu de navigation -->
+   <div th:replace="fragments/menu :: menu"></div>
 
-   <a th:href="@{/adherents/create}">Créer un nouvel adhérent</a>
+   <!-- Contenu principal -->
+   <div class="main-content">
 
-   <table border="1" cellpadding="5" cellspacing="0">
-      <thead>
-         <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Quota</th>
-            <th>Actions</th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr th:each="a : ${adherents}">
-            <td th:text="${a.id}">1</td>
-            <td th:text="${a.nom}">Nom</td>
-            <td th:text="${a.quota != null ? a.quota.description : 'Aucun'}">Quota</td>
-            <td>
-               <a th:href="@{'/adherents/detail/' + ${a.id}}">Détail</a> |
-               <a th:href="@{'/adherents/edit/' + ${a.id}}">Modifier</a> |
-               <a th:href="@{'/adherents/delete/' + ${a.id}}"
-                  onclick="return confirm('Supprimer cet adhérent ?');">Supprimer</a>
-            </td>
-         </tr>
-         <tr th:if="${#lists.isEmpty(adherents)}">
-            <td colspan="4">Aucun adhérent trouvé.</td>
-         </tr>
-      </tbody>
-   </table>
+      <!-- En-tête de la page -->
+      <div class="page-header">
+         <h1>Liste des Adhérents</h1>
+         <a th:href="@{/adherents/create}" class="btn-create">Créer un nouvel adhérent</a>
+      </div>
+
+      <!-- Container du tableau -->
+      <div class="table-container">
+         <table>
+            <thead>
+               <tr>
+                  <th>ID</th>
+                  <th>Nom</th>
+                  <th>Quota</th>
+                  <th>Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr th:each="a : ${adherents}">
+                  <td th:text="${a.id}"></td>
+                  <td th:text="${a.nom}"></td>
+                  <td th:text="${a.quota != null ? a.quota.description : 'Aucun'}"></td>
+                  <td class="actions-cell">
+                     <a th:href="@{/adherents/detail/{id}(id=${a.id})}" class="btn-action btn-detail">Détail</a>
+                     <a th:href="@{/adherents/edit/{id}(id=${a.id})}" class="btn-action btn-edit">Modifier</a>
+                     <a th:href="@{/adherents/delete/{id}(id=${a.id})}" class="btn-action btn-delete"
+                        onclick="return confirm('Supprimer cet adhérent ?');">Supprimer</a>
+                  </td>
+               </tr>
+
+               <!-- État vide si aucun adhérent -->
+               <tr th:if="${#lists.isEmpty(adherents)}">
+                  <td colspan="4" class="empty-state">
+                     Aucun adhérent trouvé.
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+
+   </div>
 </body>
 
 </html>

@@ -2,44 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier un prêt</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}">
 </head>
 
 <body>
-    <h1>Modifier un prêt</h1>
-    <form th:action="@{/prets/edit/{id}(id=${pret.id_pret})}" th:object="${pret}" method="post">
-        <label>Utilisateur :</label>
-        <select th:field="*{user}" required>
-            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
-                th:selected="${pret.user != null and u.id == pret.user.id}">
-            </option>
-        </select>
-        <br />
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
 
-        <label>Livre :</label>
-        <select th:field="*{livre}" required>
-            <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
-                th:selected="${pret.livre != null and l.id == pret.livre.id}">
-            </option>
-        </select>
-        <br />
+    <!-- Contenu principal -->
+    <div class="main-content">
 
-        <label>Nombre :</label>
-        <input type="number" th:field="*{nbr}" min="1" required />
-        <br />
+        <h1>Modifier un prêt</h1>
 
-        <label>Sur place :</label>
-        <input type="checkbox" th:field="*{isSurPlace}" />
-        <br />
+        <!-- Container du formulaire -->
+        <div class="form-container">
+            <form th:action="@{/prets/edit/{id}(id=${pret.id_pret})}" th:object="${pret}" method="post">
 
-        <label>Date du prêt :</label>
-        <input type="date" th:field="*{datePret}" required />
-        <br />
+                <!-- Champ Utilisateur -->
+                <div class="form-group">
+                    <label for="userId">Utilisateur :</label>
+                    <select id="userId" name="userId" required>
+                        <option value="">-- Sélectionner un utilisateur --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.nom}"
+                            th:selected="${pret.user != null and u.id == pret.user.id}">
+                        </option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un utilisateur</div>
+                </div>
 
-        <button type="submit">Enregistrer</button>
-    </form>
+                <!-- Champ Livre -->
+                <div class="form-group">
+                    <label for="livreId">Livre :</label>
+                    <select id="livreId" name="livreId" required>
+                        <option value="">-- Sélectionner un livre --</option>
+                        <option th:each="l : ${livres}" th:value="${l.id}" th:text="${l.titre}"
+                            th:selected="${pret.livre != null and l.id == pret.livre.id}">
+                        </option>
+                    </select>
+                    <div class="error-message">Veuillez sélectionner un livre</div>
+                </div>
 
-    <a th:href="@{/prets}">Retour à la liste</a>
+                <!-- Champ Nombre -->
+                <div class="form-group">
+                    <label for="nbr">Nombre :</label>
+                    <input type="number" id="nbr" th:field="*{nbr}" placeholder="Entrez le nombre d'exemplaires"
+                        required />
+                </div>
+
+                <!-- Champ Sur place -->
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="isSurPlace" th:field="*{isSurPlace}" />
+                        <label for="isSurPlace" class="checkbox-label">Consultation sur place</label>
+                    </div>
+                </div>
+
+                <!-- Champ Date du prêt -->
+                <div class="form-group">
+                    <label for="datePret">Date du prêt :</label>
+                    <input type="date" id="datePret" th:field="*{datePret}" required />
+                    <div class="error-message">Veuillez sélectionner une date valide</div>
+                </div>
+
+                <!-- Actions du formulaire -->
+                <div class="form-actions">
+                    <a th:href="@{/prets}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit">Mettre à jour le prêt</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

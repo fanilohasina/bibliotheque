@@ -6,6 +6,8 @@
 </head>
 
 <body>
+    <div th:replace="fragments/menu-membre :: menu"></div>
+
     <h1>Menu Membre</h1>
     <ul>
         <li><a th:href="@{/membre/livres}">Liste des livres</a></li>
