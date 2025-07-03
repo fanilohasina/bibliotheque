@@ -48,7 +48,11 @@ public class MembreController {
     // }
 
     @GetMapping
-    public String listeLivres(@RequestParam(required = false) String titre, Model model, HttpSession session) {
+    public String listeLivres(@RequestParam(required = false) String searchType,
+            @RequestParam(required = false) String search,
+            Model model,
+            HttpSession session) {
+
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
@@ -59,22 +63,36 @@ public class MembreController {
             return "error/403";
         }
 
-        List<Livre> livres = (titre != null && !titre.isEmpty())
-                ? livreService.searchByTitre(titre)
-                : livreService.getAll();
+        List<Livre> livres;
 
-        // Récupérer le nombre d'exemplaires par livre
-        List<Object[]> exemplaireCounts = exemplaireRepository.getExemplaireCountPerLivre();
-        Map<Long, Integer> livreExemplaireMap = new HashMap<>();
-        for (Object[] row : exemplaireCounts) {
+        if (search != null && !search.isEmpty()) {
+            switch (searchType) {
+                case "auteur":
+                    livres = livreService.searchByAuteur(search);
+                    break;
+                case "categorie":
+                    livres = livreService.searchByCategorie(search);
+                    break;
+                default:
+                    livres = livreService.searchByTitre(search);
+                    break;
+            }
+        } else {
+            livres = livreService.getAll();
+        }
+
+        // Exemple: Map ID livre -> nb exemplaires restants
+        Map<Long, Integer> exemplaireCounts = new HashMap<>();
+        for (Object[] row : exemplaireRepository.getExemplaireCountPerLivre()) {
             Long livreId = (Long) row[0];
             Integer total = ((Number) row[1]).intValue();
-            livreExemplaireMap.put(livreId, total);
+            exemplaireCounts.put(livreId, total);
         }
 
         model.addAttribute("livres", livres);
-        model.addAttribute("titreRecherche", titre);
-        model.addAttribute("exemplaireCounts", livreExemplaireMap);
+        model.addAttribute("exemplaireCounts", exemplaireCounts);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("search", search);
 
         return "membre/livres";
     }

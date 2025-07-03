@@ -49,4 +49,12 @@ public class LivreService {
     public List<Livre> searchByTitre(String titre) {
         return repository.findByTitreContainingIgnoreCase(titre);
     }
+
+    public List<Livre> searchByAuteur(String auteur) {
+        return repository.findByAuteurNomContainingIgnoreCase(auteur);
+    }
+
+    public List<Livre> searchByCategorie(String categorie) {
+        return repository.findByCategoriesNomContainingIgnoreCase(categorie);
+    }
 }
