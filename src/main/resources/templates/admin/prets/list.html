@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Liste des prêts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}" />
+</head>
+
+<body>
+    <div th:replace="fragments/menu-fonc :: menu"></div>
+
+    <div class="main-content">
+        <h1><i class="fas fa-hand-holding"></i> Liste des prêts</h1>
+
+        <!-- Formulaire de filtre -->
+        <!-- Formulaire de filtre -->
+        <form th:action="@{/admin/prets/list}" method="get" class="search-bar">
+            <label for="etudiant">Filtrer par étudiant (nom ou prénom) :</label>
+            <input type="text" id="etudiant" name="etudiant" th:value="${etudiantSelectionne}"
+                placeholder="Nom ou prénom" />
+
+            <label for="statut">Filtrer par statut :</label>
+            <select id="statut" name="statut">
+                <option value="">-- Tous --</option>
+                <option th:each="s : ${statutsDisponibles}" th:value="${s.nom}" th:text="${s.nom}"
+                    th:selected="${s.nom == statutSelectionne}">
+                </option>
+            </select>
+
+            <button type="submit"><i class="fas fa-filter"></i> Filtrer</button>
+            <a th:href="@{/admin/prets/list}" class="reset-btn"><i class="fas fa-times-circle"></i> Réinitialiser</a>
+        </form>
+
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Livre</th>
+                        <th>Quantité</th>
+                        <th>Sur place</th>
+                        <th>Date de prêt</th>
+                        <th>Statut actuel</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pret : ${prets}">
+                        <td th:text="${pret.user.nom + ' ' + pret.user.prenom}">Utilisateur</td>
+                        <td th:text="${pret.livre.titre}">Livre</td>
+                        <td th:text="${pret.nbr}">1</td>
+                        <td>
+                            <span th:if="${pret.isSurPlace}" class="badge-oui">
+                                <i class="fas fa-check-circle"></i> Oui
+                            </span>
+                            <span th:unless="${pret.isSurPlace}" class="badge-non">
+                                <i class="fas fa-home"></i> Non
+                            </span>
+                        </td>
+                        <td th:text="${#temporals.format(pret.datePret, 'dd/MM/yyyy')}">01/07/2025</td>
+                        <td
+                            th:text="${statutsCourants[pret.idPret] != null ? statutsCourants[pret.idPret].status1.nom : 'N/A'}">
+                            Statut</td>
+                        <td>
+                            <form th:action="@{/admin/prets/modifier-statut}" method="post">
+                                <input type="hidden" name="idPret" th:value="${pret.idPret}" />
+
+                                <select name="nouveauStatut" required>
+                                    <option th:each="s : ${statutsDisponibles}" th:value="${s.nom}" th:text="${s.nom}"
+                                        th:selected="${s.nom == statutsCourants[pret.idPret]?.status1?.nom}">
+                                    </option>
+                                </select>
+
+                                <input type="date" name="dateChangement" required />
+
+                                <button type="submit" class="btn-modifier">
+                                    <i class="fas fa-pen"></i> Modifier
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(prets)}" class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3>Aucun prêt trouvé</h3>
+                <p>Il n'y a actuellement aucun prêt correspondant à votre recherche.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

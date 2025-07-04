@@ -2,6 +2,7 @@ package com.java.bibliotheque.service;
 
 import com.java.bibliotheque.entite.Abonnement;
 import com.java.bibliotheque.entite.Livre;
+import com.java.bibliotheque.entite.Penalite;
 import com.java.bibliotheque.entite.Pret;
 import com.java.bibliotheque.entite.Quota;
 import com.java.bibliotheque.entite.Status1;
@@ -9,6 +10,7 @@ import com.java.bibliotheque.entite.StatusPret;
 import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.AbonnementRepository;
 import com.java.bibliotheque.repository.ExemplaireRepository;
+import com.java.bibliotheque.repository.PenaliteRepository;
 import com.java.bibliotheque.repository.PretRepository;
 import com.java.bibliotheque.repository.Status1Repository;
 import com.java.bibliotheque.repository.StatusPretRepository;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +39,9 @@ public class PretService {
 
     @Autowired
     private StatusPretRepository statusPretRepository;
+
+    @Autowired
+    private PenaliteRepository penaliteRepository;
 
     private final PretRepository repository;
 
@@ -73,6 +79,8 @@ public class PretService {
         int nbr = pret.getNbr();
         boolean isSurPlace = pret.getIsSurPlace();
         LocalDate datePret = pret.getDatePret();
+
+        // Ajout de penalite si retard
 
         // Vérifie si un abonnement est actif à cette date
         List<Abonnement> abonnements = abonnementRepository.findAbonnementActif(user.getId(), datePret);
@@ -115,6 +123,79 @@ public class PretService {
 
         statusPret.setStatus1(statutInitial);
         statusPretRepository.save(statusPret);
+    }
+
+    public List<Pret> getAllPretsParStatut(String statut) {
+        return pretRepository.findAllPretsByStatut(statut);
+    }
+
+    public List<Pret> getAllPretsParStatutEtudiant(String statut, String etudiant) {
+        if ((statut == null || statut.isEmpty()) && (etudiant == null || etudiant.isEmpty())) {
+            return pretRepository.findAll();
+        }
+        return pretRepository.findPretsByStatusEtudiant(
+                (statut == null || statut.isEmpty()) ? null : statut,
+                (etudiant == null || etudiant.isEmpty()) ? null : etudiant);
+    }
+
+    public void modifierStatut(Integer idPret, String nouveauStatut, LocalDate dateChangement) {
+        Pret pret = this.getById(idPret).orElseThrow();
+
+        Status1 statut = status1Repository.findByNom(nouveauStatut); // ou autre méthode
+        StatusPret nouveau = new StatusPret();
+        nouveau.setPret(pret);
+        nouveau.setStatus1(statut);
+        nouveau.setDateAction(dateChangement);
+
+        statusPretRepository.save(nouveau);
+    }
+
+    public void verifierEtAppliquerPenaliteLorsRetour(Pret pret) {
+        List<StatusPret> statusList = statusPretRepository.findByPretOrderByDateActionAsc(pret);
+
+        boolean estDejaRetourne = statusList.stream()
+                .anyMatch(s -> "Retourné".equalsIgnoreCase(s.getStatus1().getNom()));
+        if (!estDejaRetourne)
+            return;
+
+        LocalDate dateDebut = null;
+        LocalDate dateRetour = null;
+
+        for (StatusPret s : statusList) {
+            if ("En cours".equalsIgnoreCase(s.getStatus1().getNom())) {
+                dateDebut = s.getDateAction();
+            } else if ("Retourné".equalsIgnoreCase(s.getStatus1().getNom())) {
+                dateRetour = s.getDateAction();
+            }
+        }
+
+        if (dateDebut != null && dateRetour != null) {
+            long joursEffectifs = ChronoUnit.DAYS.between(dateDebut, dateRetour);
+            Integer dureeAutorisee = pret.getUser().getAdherent().getQuota().getNbr_jour_max_pret();
+
+            int retard = (int) (joursEffectifs - dureeAutorisee);
+            if (retard > 0) {
+                User user = pret.getUser();
+                LocalDate aujourdHui = dateRetour;
+
+                // Cherche une pénalité encore en cours pour l’utilisateur
+                List<Penalite> penalitesEnCours = penaliteRepository
+                        .findPenaliteEnCoursByUser(user.getId().intValue(), aujourdHui);
+
+                if (!penalitesEnCours.isEmpty()) {
+                    Penalite penaliteExistante = penalitesEnCours.get(0);
+                    penaliteExistante.setNbrJour((penaliteExistante.getNbrJour() + retard));
+                    penaliteRepository.save(penaliteExistante);
+                } else {
+                    // Crée une nouvelle pénalité
+                    Penalite penalite = new Penalite();
+                    penalite.setUser(user);
+                    penalite.setDateAction(dateRetour);
+                    penalite.setNbrJour(retard);
+                    penaliteRepository.save(penalite);
+                }
+            }
+        }
     }
 
 }

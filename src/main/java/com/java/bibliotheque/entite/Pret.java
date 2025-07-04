@@ -8,7 +8,7 @@ public class Pret {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_pret;
+    private Integer idPret;
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
@@ -27,11 +27,15 @@ public class Pret {
     // Getters et Setters
 
     public Integer getId_pret() {
-        return id_pret;
+        return idPret;
+    }
+
+    public Integer getIdPret() {
+        return idPret;
     }
 
     public void setId_pret(Integer id_pret) {
-        this.id_pret = id_pret;
+        this.idPret = id_pret;
     }
 
     public User getUser() {
