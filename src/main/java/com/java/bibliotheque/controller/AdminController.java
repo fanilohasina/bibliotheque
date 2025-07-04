@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java.bibliotheque.entite.Penalite;
 import com.java.bibliotheque.entite.Pret;
+import com.java.bibliotheque.entite.Reservation;
 import com.java.bibliotheque.entite.StatusPret;
 import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.LivreRepository;
 import com.java.bibliotheque.service.PenaliteService;
 import com.java.bibliotheque.service.PretService;
+import com.java.bibliotheque.service.ReservationService;
 import com.java.bibliotheque.service.Status1Service;
 import com.java.bibliotheque.service.StatusPretService;
 import com.java.bibliotheque.service.UserService;
@@ -48,6 +50,9 @@ public class AdminController {
 
     @Autowired
     private PenaliteService penaliteService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @GetMapping("prets/ajouter")
     public String afficherFormulairePret(@RequestParam(required = false) Integer idLivre,
@@ -129,6 +134,32 @@ public class AdminController {
         model.addAttribute("dateRechercheSelectionnee", dateRecherche);
 
         return "admin/penalites/list";
+    }
+
+    @GetMapping("reservations/list")
+    public String listReservations(@RequestParam(required = false) String nom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (user.getAdherent() == null || !"Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
+            return "error/403";
+        }
+
+        List<Reservation> reservations;
+
+        if ((nom != null && !nom.isEmpty()) || date != null) {
+            reservations = reservationService.findByNomOrDate(nom, date);
+        } else {
+            reservations = reservationService.findAll();
+        }
+
+        model.addAttribute("reservations", reservations);
+        model.addAttribute("nomRecherche", nom);
+        model.addAttribute("dateRecherche", date);
+        return "admin/reservations/list";
     }
 
 }

@@ -39,7 +39,15 @@ public class Reservation {
         return id_reservation;
     }
 
+    public Integer getIdReservation() {
+        return id_reservation;
+    }
+
     public void setId_reservation(Integer id_reservation) {
+        this.id_reservation = id_reservation;
+    }
+
+    public void setIdReservation(Integer id_reservation) {
         this.id_reservation = id_reservation;
     }
 

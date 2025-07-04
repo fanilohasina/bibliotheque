@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Liste des réservations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}" />
+
+</head>
+
+<body>
+    <div th:replace="fragments/menu-fonc :: menu"></div>
+
+    <div class="main-content">
+        <h1><i class="fas fa-calendar-check"></i> Liste des réservations</h1>
+
+        <!-- Formulaire de filtre -->
+        <form th:action="@{/admin/reservations/list}" method="get" class="search-bar">
+
+            <label for="nom">Filtrer par nom :</label>
+            <input type="text" id="nom" name="nom" th:value="${nomRecherche}" placeholder="Nom utilisateur" />
+
+            <label for="date">Filtrer par date :</label>
+            <input type="date" id="date" name="date" th:value="${dateRecherche}" />
+
+            <button type="submit"><i class="fas fa-filter"></i> Filtrer</button>
+            <a th:href="@{/admin/reservations}" class="reset-btn">
+                <i class="fas fa-times-circle"></i> Réinitialiser
+            </a>
+        </form>
+
+        <div class="table-container">
+            <table th:if="${not #lists.isEmpty(reservations)}">
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Livre</th>
+                        <th>Nombre</th>
+                        <th>Sur place</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${reservations}">
+                        <td th:text="${r.user.nom + ' ' + r.user.prenom}">Nom</td>
+                        <td th:text="${r.livre.titre}">Titre livre</td>
+                        <td th:text="${r.nbr}">1</td>
+                        <td>
+                            <span th:if="${r.isSurPlace}" class="badge-oui"><i class="fas fa-check"></i> Oui</span>
+                            <span th:unless="${r.isSurPlace}" class="badge-non"><i class="fas fa-home"></i> Non</span>
+                        </td>
+                        <td th:text="${#temporals.format(r.dateReservation, 'dd/MM/yyyy')}">04/07/2025</td>
+                        <td>
+                            <form th:action="@{'/admin/reservations/valider/' + ${r.idReservation}}" method="post">
+                                <button type="submit" class="valider-btn">
+                                    <i class="fas fa-check-circle"></i> Valider
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(reservations)}" class="empty-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>Aucune réservation trouvée</h3>
+                <p>Aucune réservation ne correspond à votre recherche.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

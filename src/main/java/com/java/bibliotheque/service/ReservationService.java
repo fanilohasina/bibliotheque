@@ -5,6 +5,7 @@ import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,4 +41,16 @@ public class ReservationService {
     public List<Reservation> findByUserAndLivreTitre(User user, String titre) {
         return repository.findByUserAndLivre_TitreContainingIgnoreCase(user, titre);
     }
+
+    public List<Reservation> findByNomOrDate(String nom, LocalDate date) {
+        if (nom != null && date != null) {
+            return repository.findByUserNomContainingIgnoreCaseAndDateReservation(nom, date);
+        } else if (nom != null) {
+            return repository.findByUserNomContainingIgnoreCase(nom);
+        } else if (date != null) {
+            return repository.findByDateReservation(date);
+        }
+        return repository.findAll();
+    }
+
 }
