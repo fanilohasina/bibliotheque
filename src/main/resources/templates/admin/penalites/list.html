@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Liste des pénalités</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}" />
+
+</head>
+
+<body>
+    <div th:replace="fragments/menu-fonc :: menu"></div>
+
+    <div class="main-content">
+        <h1><i class="fas fa-exclamation-triangle"></i> Liste des pénalités</h1>
+
+        <!-- Formulaire de filtre -->
+        <form th:action="@{/admin/penalites/list}" method="get" class="search-bar">
+
+            <label for="etudiant">Filtrer par étudiant (nom) :</label>
+            <input type="text" id="etudiant" name="etudiant" th:value="${etudiantSelectionne}" placeholder="Nom" />
+
+            <label for="dateRecherche">Date action :</label>
+            <input type="date" id="dateRecherche" name="dateRecherche" th:value="${dateRechercheSelectionnee}" />
+
+            <button type="submit"><i class="fas fa-filter"></i> Filtrer</button>
+            <a th:href="@{/admin/penalites/list}" class="reset-btn"><i class="fas fa-times-circle"></i>
+                Réinitialiser</a>
+        </form>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Étudiant</th>
+                        <th>Date action</th>
+                        <th>Nombre de jours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="penalite : ${penalites}">
+                        <td th:text="${penalite.user.nom + ' ' + penalite.user.prenom}">Nom étudiant</td>
+                        <td th:text="${#temporals.format(penalite.dateAction, 'dd/MM/yyyy')}">01/07/2025</td>
+                        <td th:text="${penalite.nbrJour}">5</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(penalites)}" class="empty-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>Aucune pénalité trouvée</h3>
+                <p>Il n'y a actuellement aucune pénalité correspondant à votre recherche.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

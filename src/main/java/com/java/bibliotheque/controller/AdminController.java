@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.java.bibliotheque.entite.Penalite;
 import com.java.bibliotheque.entite.Pret;
 import com.java.bibliotheque.entite.StatusPret;
 import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.LivreRepository;
+import com.java.bibliotheque.repository.PenaliteRepository;
+import com.java.bibliotheque.service.PenaliteService;
 import com.java.bibliotheque.service.PretService;
 import com.java.bibliotheque.service.Status1Service;
 import com.java.bibliotheque.service.StatusPretService;
@@ -26,7 +29,7 @@ import com.java.bibliotheque.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/admin/prets")
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -44,7 +47,10 @@ public class AdminController {
     @Autowired
     private Status1Service status1Service;
 
-    @GetMapping("/ajouter")
+    @Autowired
+    private PenaliteService penaliteService;
+
+    @GetMapping("prets/ajouter")
     public String afficherFormulairePret(@RequestParam(required = false) Integer idLivre,
             Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -60,7 +66,7 @@ public class AdminController {
         return "admin/prets/formulaire";
     }
 
-    @PostMapping("/ajouter")
+    @PostMapping("prets/ajouter")
     public String enregistrerPret(@ModelAttribute Pret pret, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
 
@@ -81,7 +87,7 @@ public class AdminController {
         return "admin/prets/message";
     }
 
-    @GetMapping("/list")
+    @GetMapping("prets/list")
     public String voirTousLesPrets(
             @RequestParam(required = false) String statut,
             @RequestParam(required = false) String etudiant,
@@ -99,15 +105,31 @@ public class AdminController {
         return "admin/prets/list";
     }
 
-    @PostMapping("/modifier-statut")
+    @PostMapping("prets/modifier-statut")
     public String modifierStatutPret(
             @RequestParam Long idPret,
             @RequestParam String nouveauStatut,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateChangement) {
+
+        pretService.modifierStatut(Integer.parseInt(idPret + ""), nouveauStatut, dateChangement);
         Pret pret = pretService.getById(idPret.intValue()).orElseThrow(() -> new RuntimeException("Prêt non trouvé"));
         pretService.verifierEtAppliquerPenaliteLorsRetour(pret);
-        pretService.modifierStatut(Integer.parseInt(idPret + ""), nouveauStatut, dateChangement);
         return "redirect:/admin/prets/list";
+    }
+
+    @GetMapping("penalites/list")
+    public String voirToutesLesPenalites(
+            @RequestParam(required = false) String etudiant,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateRecherche,
+            Model model) {
+
+        List<Penalite> penalites = penaliteService.getPenalitesParRecherche(etudiant, dateRecherche);
+
+        model.addAttribute("penalites", penalites);
+        model.addAttribute("etudiantSelectionne", etudiant);
+        model.addAttribute("dateRechercheSelectionnee", dateRecherche);
+
+        return "admin/penalites/list";
     }
 
 }

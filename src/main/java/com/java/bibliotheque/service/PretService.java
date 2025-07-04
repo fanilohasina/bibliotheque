@@ -80,7 +80,13 @@ public class PretService {
         boolean isSurPlace = pret.getIsSurPlace();
         LocalDate datePret = pret.getDatePret();
 
-        // Ajout de penalite si retard
+        // Vérifie si l'utilisateur a des pénalités en cours
+        LocalDate aujourdHui = pret.getDatePret();
+        List<Penalite> penalitesEnCours = penaliteRepository
+                .findPenaliteEnCoursByUser(user.getId().intValue(), aujourdHui);
+        if (!penalitesEnCours.isEmpty()) {
+            throw new Exception("L'utilisateur a des pénalités en cours, il ne peut pas effectuer de prêt.");
+        }
 
         // Vérifie si un abonnement est actif à cette date
         List<Abonnement> abonnements = abonnementRepository.findAbonnementActif(user.getId(), datePret);
@@ -115,7 +121,7 @@ public class PretService {
         statusPret.setPret(pret);
         statusPret.setDateAction(datePret);
 
-        // Tu peux remplacer 1 par l'ID réel du statut initial (ex: "En cours")
+        // Récupère le statut initial (ex: "En cours")
         Status1 statutInitial = status1Repository.findByNom("En cours");
         if (statutInitial == null) {
             throw new Exception("Statut initial 'En cours' non trouvé.");
@@ -153,18 +159,13 @@ public class PretService {
     public void verifierEtAppliquerPenaliteLorsRetour(Pret pret) {
         List<StatusPret> statusList = statusPretRepository.findByPretOrderByDateActionAsc(pret);
 
-        boolean estDejaRetourne = statusList.stream()
-                .anyMatch(s -> "Retourné".equalsIgnoreCase(s.getStatus1().getNom()));
-        if (!estDejaRetourne)
-            return;
-
         LocalDate dateDebut = null;
         LocalDate dateRetour = null;
 
         for (StatusPret s : statusList) {
             if ("En cours".equalsIgnoreCase(s.getStatus1().getNom())) {
                 dateDebut = s.getDateAction();
-            } else if ("Retourné".equalsIgnoreCase(s.getStatus1().getNom())) {
+            } else if ("Retourner".equalsIgnoreCase(s.getStatus1().getNom())) {
                 dateRetour = s.getDateAction();
             }
         }
@@ -176,11 +177,10 @@ public class PretService {
             int retard = (int) (joursEffectifs - dureeAutorisee);
             if (retard > 0) {
                 User user = pret.getUser();
-                LocalDate aujourdHui = dateRetour;
 
                 // Cherche une pénalité encore en cours pour l’utilisateur
                 List<Penalite> penalitesEnCours = penaliteRepository
-                        .findPenaliteEnCoursByUser(user.getId().intValue(), aujourdHui);
+                        .findPenaliteEnCoursByUser(user.getId().intValue(), dateRetour);
 
                 if (!penalitesEnCours.isEmpty()) {
                     Penalite penaliteExistante = penalitesEnCours.get(0);
