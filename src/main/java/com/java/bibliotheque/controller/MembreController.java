@@ -22,30 +22,32 @@ public class MembreController {
     private final PretService pretService;
     private final ReservationService reservationService;
     private final ExemplaireRepository exemplaireRepository;
+    private final PenaliteService penaliteService;
 
     public MembreController(
             LivreService livreService,
             PretService pretService,
-            ReservationService reservationService, ExemplaireRepository exemplaireRepository) {
+            ReservationService reservationService, ExemplaireRepository exemplaireRepository,
+            PenaliteService penaliteService) {
         this.exemplaireRepository = exemplaireRepository;
         this.livreService = livreService;
         this.pretService = pretService;
         this.reservationService = reservationService;
+        this.penaliteService = penaliteService;
     }
 
-    // @GetMapping
-    // public String menu(HttpSession session) {
-    // User user = (User) session.getAttribute("user");
-    // if (user == null) {
-    // return "redirect:/login"; // Pas connecté
-    // }
+    @GetMapping("/penalites")
+    public String listePenalites(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
 
-    // if (user.getAdherent() != null &&
-    // "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
-    // return "error/403"; // Admin interdit ici
-    // }
-    // return "membre/menu";
-    // }
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<Penalite> penalites = penaliteService.getPenalitesByUser(user);
+        model.addAttribute("penalites", penalites);
+        return "membre/penalites";
+    }
 
     @GetMapping
     public String listeLivres(@RequestParam(required = false) String searchType,

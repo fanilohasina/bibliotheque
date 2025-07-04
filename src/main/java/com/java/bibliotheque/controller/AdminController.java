@@ -19,7 +19,6 @@ import com.java.bibliotheque.entite.Pret;
 import com.java.bibliotheque.entite.StatusPret;
 import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.LivreRepository;
-import com.java.bibliotheque.repository.PenaliteRepository;
 import com.java.bibliotheque.service.PenaliteService;
 import com.java.bibliotheque.service.PretService;
 import com.java.bibliotheque.service.Status1Service;
@@ -58,7 +57,7 @@ public class AdminController {
         if (user == null) {
             return "redirect:/login";
         }
-        model.addAttribute("users", userService.getAll());
+        model.addAttribute("users", userService.getAllExceptAdmin());
         model.addAttribute("livres", livreRepository.findAll());
         model.addAttribute("pret", new Pret());
         model.addAttribute("selectedLivreId", idLivre);

@@ -1,30 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
     <title>Mes pénalités</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/membre/prets.css}">
 </head>
 
 <body>
-    <h1>Mes pénalités</h1>
+    <div th:replace="fragments/menu-membre :: menu"></div>
 
-    <form method="get" th:action="@{/membre/penalites}">
-        <input type="text" name="search" placeholder="Mot-clé">
-        <button type="submit">Rechercher</button>
-    </form>
+    <div class="main-content">
+        <h1><i class="fas fa-exclamation-triangle"></i> Mes pénalités</h1>
 
-    <table border="1">
-        <tr>
-            <th>Motif</th>
-            <th>Montant</th>
-            <th>Date</th>
-        </tr>
-        <tr th:each="p : ${penalites}">
-            <td th:text="${p.motif}"></td>
-            <td th:text="${p.montant} + ' Ar'"></td>
-            <td th:text="${p.date}"></td>
-        </tr>
-    </table>
+        <div class="table-container">
+            <table th:if="${not #lists.isEmpty(penalites)}">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-file-alt"></i> Motif</th>
+                        <th><i class="fas fa-coins"></i> Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${penalites}">
+                        <td class="motif" data-label="Motif:" th:text="${p.motif}">Retard</td>
+                        <td class="montant" data-label="Montant:" th:text="${p.montant} + ' Ar'">1000 Ar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(penalites)}" class="empty-state">
+                <i class="fas fa-check-circle"></i>
+                <h3>Aucune pénalité trouvée</h3>
+                <p>Félicitations ! Vous n'avez aucune pénalité en cours.</p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

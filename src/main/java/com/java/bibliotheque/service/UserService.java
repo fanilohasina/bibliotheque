@@ -69,4 +69,8 @@ public class UserService {
         return matches ? user : null;
     }
 
+    public List<User> getAllExceptAdmin() {
+        return repo.findByAdherentNomNotIgnoreCase("Admin");
+    }
+
 }
