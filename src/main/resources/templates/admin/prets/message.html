@@ -3,16 +3,366 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Message</title>
+    <title>Message - Système de Bibliothèque</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c465b 0%, #3d5a75 35%, #4a6fa5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Particules flottantes pour l'effet dynamique */
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Conteneur principal */
+        .message-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px);
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        /* Icône de livre décorative */
+        .book-icon {
+            font-size: 4rem;
+            color: #2c465b;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Messages de succès et d'erreur */
+        .message-success,
+        .message-error {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 15px;
+            position: relative;
+            animation: messageGlow 2s ease-in-out infinite alternate;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #f44336, #ef5350);
+            color: white;
+            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+        }
+
+        @keyframes messageGlow {
+            0% {
+                box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            }
+
+            100% {
+                box-shadow: 0 8px 35px rgba(76, 175, 80, 0.5);
+            }
+        }
+
+        .message-error {
+            animation-name: messageGlowError;
+        }
+
+        @keyframes messageGlowError {
+            0% {
+                box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+            }
+
+            100% {
+                box-shadow: 0 8px 35px rgba(244, 67, 54, 0.5);
+            }
+        }
+
+        /* Icônes de statut */
+        .status-icon {
+            font-size: 3rem;
+            margin-right: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Bouton de retour stylisé */
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2c465b, #3d5a75);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(44, 70, 91, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(44, 70, 91, 0.4);
+        }
+
+        /* Effet de chargement */
+        .loading-dots {
+            margin-top: 1rem;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            margin: 0 3px;
+            background-color: #2c465b;
+            border-radius: 50%;
+            display: inline-block;
+            animation: loading 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes loading {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .message-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .message-success,
+            .message-error {
+                font-size: 1.2rem;
+            }
+
+            .book-icon {
+                font-size: 3rem;
+            }
+
+            .back-button {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-container {
+                padding: 1.5rem;
+            }
+
+            .message-success,
+            .message-error {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+
+            .book-icon {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Particules flottantes -->
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
 
-    <h2 th:if="${success}" style="color: green;">✔️ <span th:text="${message}"></span></h2>
-    <h2 th:if="${!success}" style="color: red;">❌ <span th:text="${message}"></span></h2>
+    <div class="message-container">
+        <!-- Icône de livre -->
+        <div class="book-icon">📚</div>
 
-    <a href="/admin/prets/ajouter">Retour au formulaire</a>
+        <!-- Message de succès -->
+        <div th:if="${success}" class="message-success">
+            <span class="status-icon">✨</span>
+            <span th:text="${message}">Message de succès</span>
+        </div>
 
+        <!-- Message d'erreur -->
+        <div th:if="${!success}" class="message-error">
+            <span class="status-icon">⚠️</span>
+            <span th:text="${message}">Message d'erreur</span>
+        </div>
+
+        <!-- Effet de chargement décoratif -->
+        <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <!-- Bouton de retour -->
+        <a href="/admin/prets/ajouter" class="back-button">
+            📖 Retour au formulaire
+        </a>
+    </div>
+
+    <script>
+        // Animation d'entrée au chargement
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.message-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(50px) scale(0.9)';
+
+            setTimeout(() => {
+                container.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0) scale(1)';
+            }, 100);
+        });
+
+        // Effet de parallaxe sur les particules
+        document.addEventListener('mousemove', function (e) {
+            const particles = document.querySelectorAll('.particle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.5;
+                const xPos = x * speed;
+                const yPos = y * speed;
+                particle.style.transform += ` translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 package com.java.bibliotheque.service;
 
 import com.java.bibliotheque.entite.Abonnement;
+import com.java.bibliotheque.entite.Exemplaire;
 import com.java.bibliotheque.entite.Livre;
 import com.java.bibliotheque.entite.Penalite;
 import com.java.bibliotheque.entite.Pret;
@@ -42,6 +43,9 @@ public class PretService {
 
     @Autowired
     private PenaliteRepository penaliteRepository;
+
+    @Autowired
+    private ExemplaireService exemplaireService;
 
     private final PretRepository repository;
 
@@ -129,6 +133,13 @@ public class PretService {
 
         statusPret.setStatus1(statutInitial);
         statusPretRepository.save(statusPret);
+
+        Exemplaire exemplaire = new Exemplaire();
+        exemplaire.setLivre(pret.getLivre());
+        exemplaire.setDateAction(aujourdHui);
+        exemplaire.setAction(false);
+        exemplaire.setNbr(pret.getNbr());
+        exemplaireService.save(exemplaire);
     }
 
     public List<Pret> getAllPretsParStatut(String statut) {

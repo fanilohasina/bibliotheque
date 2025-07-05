@@ -4,6 +4,8 @@
 <body>
     <div th:fragment="menu">
         <link rel="stylesheet" th:href="@{/css/fragments/menu.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
 
         <!-- Menu de navigation fixe -->
         <nav class="sidebar-menu">
@@ -17,6 +19,9 @@
 
             <!-- Liste de navigation -->
             <ul class="menu-list">
+                <li><a th:href="@{/admin/prets/list}"><i class="fas fa-credit-card"></i><span>Autre
+                            fonctionnalite</span></a>
+                </li>
                 <li><a th:href="@{/abonnements}"><i class="fas fa-credit-card"></i><span>Abonnements</span></a></li>
                 <li><a th:href="@{/adherents}"><i class="fas fa-users"></i><span>Adhérents</span></a></li>
                 <li><a th:href="@{/auteurs}"><i class="fas fa-feather-alt"></i><span>Auteurs</span></a></li>
@@ -36,6 +41,10 @@
                 <li><a th:href="@{/statusReservations}"><i
                             class="fas fa-list-check"></i><span>StatusReservations</span></a></li>
                 <li><a th:href="@{/users}"><i class="fas fa-user-cog"></i><span>Utilisateurs</span></a></li>
+                <li><a th:href="@{/login}" href="/penalites" style="background-color: red; color: white;">
+                        <i class="fas fa-exclamation-triangle" style="color: white;"></i>
+                        <span>Deconnection</span>
+                    </a></li>
             </ul>
         </nav>
 

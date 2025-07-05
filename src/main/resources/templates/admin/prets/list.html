@@ -45,7 +45,7 @@
                         <th>Sur place</th>
                         <th>Date de prêt</th>
                         <th>Statut actuel</th>
-                        <th>Action</th>
+                        <th>Retourner</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,19 +66,23 @@
                             th:text="${statutsCourants[pret.idPret] != null ? statutsCourants[pret.idPret].status1.nom : 'N/A'}">
                             Statut</td>
                         <td>
-                            <form th:action="@{/admin/prets/modifier-statut}" method="post">
+                            <form th:action="@{/admin/prets/modifier-statut}"
+                                th:if="${statutsCourants[pret.idPret].status1.nom != 'Retourner'}" method="post"
+                                class="modifier-containe">
                                 <input type="hidden" name="idPret" th:value="${pret.idPret}" />
+                                <input type="hidden" name="nouveauStatut" th:value="${statutsDisponibles[2].nom}" />
 
-                                <select name="nouveauStatut" required>
+
+                                <!-- <select name="nouveauStatut" required>
                                     <option th:each="s : ${statutsDisponibles}" th:value="${s.nom}" th:text="${s.nom}"
                                         th:selected="${s.nom == statutsCourants[pret.idPret]?.status1?.nom}">
                                     </option>
-                                </select>
+                                </select> -->
 
                                 <input type="date" name="dateChangement" required />
 
                                 <button type="submit" class="btn-modifier">
-                                    <i class="fas fa-pen"></i> Modifier
+                                    <i class="fas fa-pen"></i>
                                 </button>
                             </form>
                         </td>

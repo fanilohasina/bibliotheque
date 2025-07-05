@@ -519,3 +519,25 @@ tr:nth-child(5) {
         transform: translateX(0);
     }
 }
+
+button.btn-modifier {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3b100;
+    border: 1px solid gray;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form.modifier-containe {
+    display: flex;
+    gap: 5px;
+}
+
+form.modifier-containe>input,
+form.modifier-containe>select {
+    border-radius: 5px;
+}

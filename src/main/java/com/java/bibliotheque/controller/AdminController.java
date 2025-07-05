@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.java.bibliotheque.entite.Exemplaire;
 import com.java.bibliotheque.entite.Penalite;
 import com.java.bibliotheque.entite.Pret;
 import com.java.bibliotheque.entite.Reservation;
 import com.java.bibliotheque.entite.StatusPret;
 import com.java.bibliotheque.entite.User;
 import com.java.bibliotheque.repository.LivreRepository;
+import com.java.bibliotheque.service.ExemplaireService;
 import com.java.bibliotheque.service.PenaliteService;
 import com.java.bibliotheque.service.PretService;
 import com.java.bibliotheque.service.ReservationService;
@@ -44,6 +46,9 @@ public class AdminController {
 
     @Autowired
     private StatusPretService statusPretService;
+
+    @Autowired
+    private ExemplaireService exemplaireService;
 
     @Autowired
     private Status1Service status1Service;
@@ -118,6 +123,14 @@ public class AdminController {
         pretService.modifierStatut(Integer.parseInt(idPret + ""), nouveauStatut, dateChangement);
         Pret pret = pretService.getById(idPret.intValue()).orElseThrow(() -> new RuntimeException("Prêt non trouvé"));
         pretService.verifierEtAppliquerPenaliteLorsRetour(pret);
+
+        Exemplaire exemplaire = new Exemplaire();
+        exemplaire.setLivre(pret.getLivre());
+        exemplaire.setDateAction(dateChangement);
+        exemplaire.setAction(true);
+        exemplaire.setNbr(pret.getNbr());
+        exemplaireService.save(exemplaire);
+        
         return "redirect:/admin/prets/list";
     }
 

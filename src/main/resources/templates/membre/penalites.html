@@ -19,14 +19,14 @@
             <table th:if="${not #lists.isEmpty(penalites)}">
                 <thead>
                     <tr>
-                        <th><i class="fas fa-file-alt"></i> Motif</th>
-                        <th><i class="fas fa-coins"></i> Montant</th>
+                        <th><i class="fas fa-file-alt"></i> Date d'action</th>
+                        <th><i class="fas fa-coins"></i> Penalite</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="p : ${penalites}">
-                        <td class="motif" data-label="Motif:" th:text="${p.motif}">Retard</td>
-                        <td class="montant" data-label="Montant:" th:text="${p.montant} + ' Ar'">1000 Ar</td>
+                        <td class="motif" data-label="Date:" th:text="${p.dateAction}">Retard</td>
+                        <td class="montant" data-label="Jour:" th:text="${p.nbrJour} + ' Jours'">1000 Ar</td>
                     </tr>
                 </tbody>
             </table>
