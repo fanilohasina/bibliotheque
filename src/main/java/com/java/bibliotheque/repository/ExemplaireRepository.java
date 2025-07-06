@@ -2,6 +2,7 @@ package com.java.bibliotheque.repository;
 
 import com.java.bibliotheque.entite.Exemplaire;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,16 @@ public interface ExemplaireRepository extends JpaRepository<Exemplaire, Long> {
                 WHERE e.livre.id = :idLivre
             """)
     int totalStockDisponible(@Param("idLivre") Long idLivre);
+
+    @Query("""
+                SELECT
+                    COALESCE(SUM(CASE WHEN e.action = true THEN e.nbr ELSE -e.nbr END), 0)
+                FROM Exemplaire e
+                WHERE e.livre.id = :idLivre
+                  AND e.dateAction <= :date
+            """)
+    int totalStockDisponible(
+            @Param("idLivre") Long idLivre,
+            @Param("date") LocalDate date);
+
 }

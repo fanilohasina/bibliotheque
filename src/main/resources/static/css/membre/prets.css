@@ -541,3 +541,35 @@ form.modifier-containe>input,
 form.modifier-containe>select {
     border-radius: 5px;
 }
+
+form.prolongement {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 375px;
+}
+
+form.prolongement>label {
+    font-size: 10px;
+    color: gray;
+    letter-spacing: 2px;
+}
+
+form.prolongement input {
+    width: 125px;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+form.prolongement button {
+    height: 35px;
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 0px 20px;
+    border: 1px solid gray;
+    background-color: #0080c1;
+    font-weight: bold;
+    color: white;
+}

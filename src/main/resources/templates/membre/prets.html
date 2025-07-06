@@ -35,24 +35,47 @@
                         <th><i class="fas fa-hashtag"></i> Nombre</th>
                         <th><i class="fas fa-calendar-alt"></i> Date</th>
                         <th><i class="fas fa-map-marker-alt"></i> Sur place</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Prolongement</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="pret : ${prets}">
-                        <td class="livre-titre" data-label="Livre:" th:text="${pret.livre.titre}">Le Petit Prince</td>
-                        <td class="nombre" data-label="Nombre:" th:text="${pret.nbr}">2</td>
-                        <td class="date" data-label="Date:" th:text="${#temporals.format(pret.datePret, 'dd/MM/yyyy')}">
-                            15/03/2024</td>
-                        <td class="sur-place" data-label="Sur place:">
-                            <span th:if="${pret.isSurPlace}" class="badge-oui">
-                                <i class="fas fa-check"></i> Oui
-                            </span>
-                            <span th:unless="${pret.isSurPlace}" class="badge-non">
-                                <i class="fas fa-home"></i> Non
-                            </span>
+                        <td class="livre-titre" th:text="${pret.livre.titre}">Titre</td>
+                        <td class="nombre" th:text="${pret.nbr}">1</td>
+                        <td class="date" th:text="${#temporals.format(pret.datePret, 'dd/MM/yyyy')}">10/01/2025</td>
+                        <td>
+                            <span th:if="${pret.isSurPlace}">Oui</span>
+                            <span th:unless="${pret.isSurPlace}">Non</span>
+                        </td>
+                        <td>
+                            <form method="post" th:action="@{/membre/prets/prolonger}" class="prolongement">
+                                <input type="hidden" name="idPret" th:value="${pret.idPret}" />
+                                <label>Date de demande :
+                                    <input type="date" name="dateDemande" required />
+                                </label>
+                                <label>Jours demandés :
+                                    <input type="number" name="joursVoulu" min="1" required />
+                                </label>
+                                <button type="submit">Prolonger</button>
+                            </form>
+                            <div th:if="${success}" class="alert alert-success"
+                                style="color: green; font-weight: bold;">
+                                <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
+                            </div>
+
+                            <div th:if="${error}" class="alert alert-danger" style="color: red; font-weight: bold;">
+                                <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+                            </div>
+
                         </td>
                     </tr>
+
+                    <!-- ✅ Le formulaire est toujours DANS la boucle -->
+                    <!-- <tr th:each="pret : ${prets}">
+                    </tr> -->
                 </tbody>
+
             </table>
 
             <div th:if="${#lists.isEmpty(prets)}" class="empty-state">

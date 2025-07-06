@@ -111,7 +111,7 @@ public class PretService {
         }
 
         // Vérifie le stock disponible
-        int stockDisponible = exemplaireRepository.totalStockDisponible(livre.getId());
+        int stockDisponible = exemplaireRepository.totalStockDisponible(livre.getId(), aujourdHui);
         if (stockDisponible < nbr) {
             throw new Exception("Pas assez d'exemplaires disponibles.");
         }
@@ -183,7 +183,8 @@ public class PretService {
 
         if (dateDebut != null && dateRetour != null) {
             long joursEffectifs = ChronoUnit.DAYS.between(dateDebut, dateRetour);
-            Integer dureeAutorisee = pret.getUser().getAdherent().getQuota().getNbr_jour_max_pret();
+            Integer dureeAutorisee = pret.getUser().getAdherent().getQuota().getNbr_jour_max_pret()
+                    + pret.getNbrJourProlongement();
 
             int retard = (int) (joursEffectifs - dureeAutorisee);
             if (retard > 0) {
@@ -207,6 +208,38 @@ public class PretService {
                 }
             }
         }
+    }
+
+    public void prolongerPret(Integer idPret, LocalDate dateDemande, int joursVoulu) throws Exception {
+        Pret pret = pretRepository.findById(idPret)
+                .orElseThrow(() -> new RuntimeException("Prêt introuvable"));
+
+        Quota quota = pret.getUser().getAdherent().getQuota();
+
+        // 1. Calcul de la date limite à laquelle on peut encore demander un
+        // prolongement
+        LocalDate dateLimiteProlongement = pret.getDatePret()
+                .plusDays(quota.getNbr_jour_max_pret() - quota.getNbr_jour_avant_prologement());
+
+        if (dateDemande.isAfter(dateLimiteProlongement)) {
+            throw new Exception("Vous ne pouvez plus demander de prolongement pour ce prêt.");
+        }
+
+        // 2. Vérifier le nombre de prolongements déjà effectués
+        if (pret.getProlongement() >= quota.getNbr_prologement_max()) {
+            throw new Exception("Nombre maximum de prolongements atteint.");
+        }
+
+        // 3. Vérifier que le nombre de jours demandé est dans la limite autorisée
+        if (joursVoulu > quota.getNbr_jour_max_prolongement()) {
+            throw new Exception("Le nombre de jours demandé dépasse la limite autorisée.");
+        }
+
+        // 4. Mettre à jour le prêt : on prolonge la durée
+        pret.setProlongement(pret.getProlongement() + 1);
+        pret.setNbrJourProlongement(pret.getNbrJourProlongement() + joursVoulu);
+
+        this.save(pret);
     }
 
 }

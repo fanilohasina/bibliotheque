@@ -6,10 +6,13 @@ import com.java.bibliotheque.service.*;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,6 +175,23 @@ public class MembreController {
         reservationService.save(reservation);
 
         return "redirect:/membre/reservations";
+    }
+
+    @PostMapping("/prets/prolonger")
+    public String prolongerPret(
+            @RequestParam Integer idPret,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDemande,
+            @RequestParam int joursVoulu,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            pretService.prolongerPret(idPret, dateDemande, joursVoulu);
+            redirectAttributes.addFlashAttribute("success", "Prolongement effectué avec succès !");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/membre/prets";
     }
 
 }

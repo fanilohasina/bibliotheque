@@ -24,7 +24,19 @@ public class Pret {
 
     private LocalDate datePret;
 
+    private Integer prolongement = 0;
+
+    private Integer nbrJourProlongement = 0;
+
     // Getters et Setters
+
+    public Integer getNbrJourProlongement() {
+        return nbrJourProlongement;
+    }
+
+    public void setNbrJourProlongement(Integer nbrJourProlongement) {
+        this.nbrJourProlongement = nbrJourProlongement;
+    }
 
     public Integer getId_pret() {
         return idPret;
@@ -76,5 +88,13 @@ public class Pret {
 
     public void setDatePret(LocalDate datePret) {
         this.datePret = datePret;
+    }
+
+    public Integer getProlongement() {
+        return prolongement;
+    }
+
+    public void setProlongement(Integer prolongement) {
+        this.prolongement = prolongement;
     }
 }
