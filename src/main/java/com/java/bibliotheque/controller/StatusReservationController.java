@@ -119,7 +119,7 @@ public class StatusReservationController {
             return "error/403";
         }
 
-        statusReservation.setId_status_pret(id);
+        statusReservation.setIdStatusReservation(id);
         statusReservationService.save(statusReservation);
         return "redirect:/statusReservations";
     }

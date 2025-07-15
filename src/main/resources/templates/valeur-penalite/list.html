@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valeurs de pénalité</title>
+    <link rel="stylesheet" th:href="@{/css/pages/list.css}" />
+</head>
+
+<body>
+    <!-- Menu de navigation -->
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+
+        <!-- En-tête -->
+        <div class="page-header">
+            <h1>Valeurs de pénalité</h1>
+            <a th:href="@{/valeur-penalite/create}" class="btn-create">Ajouter une valeur</a>
+        </div>
+
+        <!-- Tableau -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Jour inf</th>
+                        <th>Jour sup</th>
+                        <th>Coût</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="valeur : ${valeurs}">
+                        <td th:text="${valeur.id}"></td>
+                        <td th:text="${valeur.jourInf}"></td>
+                        <td th:text="${valeur.jourSup}"></td>
+                        <td th:text="${valeur.cout} + ' Ar'"></td>
+                        <td class="actions-cell">
+                            <a th:href="@{|/admin/valeur-penalite/edit/${valeur.id}|}"
+                                class="btn-action btn-edit">Modifier</a>
+                            <form th:action="@{|/admin/valeur-penalite/delete/${valeur.id}|}" method="post"
+                                style="display:inline">
+                                <button type="submit" class="btn-action btn-delete"
+                                    onclick="return confirm('Supprimer cette valeur ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(valeurs)}">
+                        <td colspan="5" class="empty-state">
+                            <h3>Aucune valeur enregistrée</h3>
+                            <p>Ajoutez une nouvelle règle de pénalité pour commencer.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>

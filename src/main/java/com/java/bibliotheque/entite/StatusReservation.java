@@ -9,7 +9,15 @@ public class StatusReservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_status_pret;
+    private Integer idStatusReservation;
+
+    public Integer getIdStatusReservation() {
+        return idStatusReservation;
+    }
+
+    public void setIdStatusReservation(Integer idStatusReservation) {
+        this.idStatusReservation = idStatusReservation;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservation", nullable = false)
@@ -22,14 +30,6 @@ public class StatusReservation {
     private LocalDate dateAction;
 
     // Getters & Setters
-
-    public Integer getId_status_pret() {
-        return id_status_pret;
-    }
-
-    public void setId_status_pret(Integer id_status_pret) {
-        this.id_status_pret = id_status_pret;
-    }
 
     public Reservation getReservation() {
         return reservation;

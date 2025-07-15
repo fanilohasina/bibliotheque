@@ -40,26 +40,42 @@
                         <th>Nombre</th>
                         <th>Sur place</th>
                         <th>Date</th>
+                        <th>Statut actuel</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="r : ${reservations}">
-                        <td th:text="${r.user.nom + ' ' + r.user.prenom}">Nom</td>
-                        <td th:text="${r.livre.titre}">Titre livre</td>
+                        <!-- <td colspan="6">
+                            Debug - User ID: [[${r.user?.id}]], Livre ID: [[${r.livre?.id}]], Nbr: [[${r.nbr}]], Date:
+                            [[${r.dateReservation}]]
+                        </td> -->
+                        <td th:text="${r.user.id}">Nom</td>
+                        <td th:text="${r.livre.id}">Titre livre</td>
                         <td th:text="${r.nbr}">1</td>
                         <td>
                             <span th:if="${r.isSurPlace}" class="badge-oui"><i class="fas fa-check"></i> Oui</span>
                             <span th:unless="${r.isSurPlace}" class="badge-non"><i class="fas fa-home"></i> Non</span>
                         </td>
                         <td th:text="${#temporals.format(r.dateReservation, 'dd/MM/yyyy')}">04/07/2025</td>
-                        <td>
-                            <form th:action="@{'/admin/reservations/valider/' + ${r.idReservation}}" method="post">
-                                <button type="submit" class="valider-btn">
-                                    <i class="fas fa-check-circle"></i> Valider
-                                </button>
+                        <td
+                            th:text="${statutsCourants[r.id_reservation] != null ? statutsCourants[r.id_reservation].status2.nom : 'N/A'}">
+                            Statut
+                        </td>
+
+                        <td th:if="${statutsCourants[r.id_reservation] != null 
+                                    and statutsCourants[r.id_reservation].status2.nom == 'En attente'}">
+                            <form th:action="@{/admin/reservation/check}" method="post">
+                                <input type="hidden" name="reservationId" th:value="${r.id_reservation}" />
+                                <button type="submit">Valider</button>
                             </form>
                         </td>
+
+                        <td th:unless="${statutsCourants[r.id_reservation] != null 
+                                       and statutsCourants[r.id_reservation].status2.nom == 'En attente'}">
+                            <!-- Laisse vide si le statut n'est pas "En cours" -->
+                        </td>
+
                     </tr>
                 </tbody>
             </table>

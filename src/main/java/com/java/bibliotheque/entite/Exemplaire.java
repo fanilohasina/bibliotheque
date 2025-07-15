@@ -3,6 +3,8 @@ package com.java.bibliotheque.entite;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Exemplaire {
 
@@ -12,6 +14,7 @@ public class Exemplaire {
 
     @ManyToOne
     @JoinColumn(name = "id_livre")
+    @JsonIgnore
     private Livre livre;
 
     private LocalDate dateAction;

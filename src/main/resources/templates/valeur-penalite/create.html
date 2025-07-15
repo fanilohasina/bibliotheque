@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${valeurPenalite.id == null} ? 'Créer une valeur de pénalité' : 'Modifier une valeur de pénalité'">
+        Formulaire</title>
+    <link rel="stylesheet" th:href="@{/css/pages/create.css}" />
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <div class="main-content">
+        <h1 th:text="${valeurPenalite.id == null} ? 'Créer une valeur de pénalité' : 'Modifier la valeur de pénalité'">
+            Formulaire</h1>
+
+        <div class="form-container">
+            <form
+                th:action="@{${valeurPenalite.id == null} ? '/valeur-penalite/create' : '/admin/valeur-penalite/modifier'}"
+                th:object="${valeurPenalite}" method="post">
+
+                <input type="hidden" th:if="${valeurPenalite.id != null}" th:field="*{id}" />
+
+                <div class="form-group">
+                    <label>Jour inférieur :</label>
+                    <input type="number" th:field="*{jourInf}" required class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Jour supérieur :</label>
+                    <input type="number" th:field="*{jourSup}" required class="form-input" />
+                </div>
+
+                <div class="form-group">
+                    <label>Coût :</label>
+                    <input type="number" th:field="*{cout}" required class="form-input" />
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/admin/valeur-penalite}" class="btn-back">Retour à la liste</a>
+                    <button type="submit" class="btn-submit"
+                        th:text="${valeurPenalite.id == null} ? 'Créer' : 'Enregistrer'">Créer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

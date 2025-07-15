@@ -2,6 +2,8 @@ package com.java.bibliotheque.controller;
 
 import com.java.bibliotheque.entite.*;
 import com.java.bibliotheque.repository.ExemplaireRepository;
+import com.java.bibliotheque.repository.Status2Repository;
+import com.java.bibliotheque.repository.StatusReservationRepository;
 import com.java.bibliotheque.service.*;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,17 +28,22 @@ public class MembreController {
     private final ReservationService reservationService;
     private final ExemplaireRepository exemplaireRepository;
     private final PenaliteService penaliteService;
+    private final Status2Repository status2Repository;
+    private final StatusReservationRepository statusReservationRepository;
 
     public MembreController(
             LivreService livreService,
             PretService pretService,
             ReservationService reservationService, ExemplaireRepository exemplaireRepository,
-            PenaliteService penaliteService) {
+            PenaliteService penaliteService, Status2Repository status2Repository,
+            StatusReservationRepository statusReservationRepository) {
         this.exemplaireRepository = exemplaireRepository;
         this.livreService = livreService;
         this.pretService = pretService;
         this.reservationService = reservationService;
         this.penaliteService = penaliteService;
+        this.status2Repository = status2Repository;
+        this.statusReservationRepository = statusReservationRepository;
     }
 
     @GetMapping("/penalites")
@@ -132,7 +139,6 @@ public class MembreController {
                 "Admin".equalsIgnoreCase(user.getAdherent().getNom())) {
             return "error/403"; // Admin interdit ici
         }
-
         List<Reservation> reservations = reservationService.findByUser(user);
         model.addAttribute("reservations", reservations);
         return "membre/reservations";
@@ -173,6 +179,13 @@ public class MembreController {
         reservation.setUser(user);
         reservation.setLivre(livre);
         reservationService.save(reservation);
+
+        StatusReservation statusReservation = new StatusReservation();
+        statusReservation.setReservation(reservation);
+        statusReservation.setDateAction(reservation.getDateReservation());
+        Status2 status2 = status2Repository.findByNom("En attente");
+        statusReservation.setStatus2(status2);
+        statusReservationRepository.save(statusReservation);
 
         return "redirect:/membre/reservations";
     }

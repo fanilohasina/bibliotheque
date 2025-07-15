@@ -28,6 +28,11 @@ public class Pret {
 
     private Integer nbrJourProlongement = 0;
 
+    public Pret() {
+        this.user = new User();
+        this.livre = new Livre();
+    }
+
     // Getters et Setters
 
     public Integer getNbrJourProlongement() {

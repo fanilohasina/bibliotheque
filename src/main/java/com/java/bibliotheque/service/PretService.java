@@ -47,6 +47,9 @@ public class PretService {
     @Autowired
     private ExemplaireService exemplaireService;
 
+    @Autowired
+    private ValeurPenaliteService valeurPenaliteService;
+
     private final PretRepository repository;
 
     public PretService(PretRepository repository) {
@@ -196,6 +199,11 @@ public class PretService {
 
                 if (!penalitesEnCours.isEmpty()) {
                     Penalite penaliteExistante = penalitesEnCours.get(0);
+                    try {
+                        retard = valeurPenaliteService.getCoutPourJours(retard);
+                    } catch (Exception e) {
+                        e.getMessage();
+                    }
                     penaliteExistante.setNbrJour((penaliteExistante.getNbrJour() + retard));
                     penaliteRepository.save(penaliteExistante);
                 } else {
@@ -203,6 +211,11 @@ public class PretService {
                     Penalite penalite = new Penalite();
                     penalite.setUser(user);
                     penalite.setDateAction(dateRetour);
+                    try {
+                        retard = valeurPenaliteService.getCoutPourJours(retard);
+                    } catch (Exception e) {
+                        e.getMessage();
+                    }
                     penalite.setNbrJour(retard);
                     penaliteRepository.save(penalite);
                 }
