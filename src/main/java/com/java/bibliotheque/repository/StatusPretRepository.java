@@ -15,4 +15,6 @@ public interface StatusPretRepository extends JpaRepository<StatusPret, Integer>
 
     List<StatusPret> findByPretOrderByDateActionAsc(Pret pret);
 
+    List<StatusPret> findByPret(Pret pret);
+
 }

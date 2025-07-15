@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profil Membre</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input {
+            margin-right: 15px;
+        }
+
+        h2,
+        h3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Profil du Membre</h1>
+
+    <form id="profilForm">
+        <label>ID Membre :</label>
+        <input type="text" id="userId" required>
+        <label>Date :</label>
+        <input type="date" id="dateAnalyse" required>
+        <button type="submit">Afficher le profil</button>
+    </form>
+
+    <div id="profilResult" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById('profilForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('userId').value;
+            const date = document.getElementById('dateAnalyse').value;
+            const resultContainer = document.getElementById('profilResult');
+            resultContainer.innerHTML = 'Chargement...';
+
+            try {
+                const response = await fetch(`/api/admin/profil?id=${id}&date=${date}`);
+                if (!response.ok) throw new Error('Erreur lors de la récupération des données');
+                const data = await response.json();
+
+                // 🔢 Extraction
+                const penalites = data.penalites;
+                const quota = data.quota;
+                const abonnement = data.abonnement;
+                const prets = data.prets;
+
+                // 🔎 Calculs
+                const livreMax = quota.nbr_livre_max_prets;
+                const livresEmpruntes = prets.length;
+                const livresRestants = livreMax - livresEmpruntes;
+
+                const dateObj = new Date(date);
+                const dateDebutAbo = new Date(abonnement.date_debut);
+                const dateFinAbo = new Date(abonnement.date_fin);
+                const aboActif = dateObj >= dateDebutAbo && dateObj <= dateFinAbo;
+
+                // 📦 Affichage
+                resultContainer.innerHTML = `
+      <h2>Résultats pour l'ID ${id} à la date du ${date}</h2>
+
+      <h3>📅 Abonnement</h3>
+      <p>Début : ${abonnement.date_debut} <br>
+         Fin : ${abonnement.date_fin} <br>
+         Statut : <strong>${aboActif ? "✅ Actif" : "❌ Inactif"}</strong></p>
+
+      <h3>📏 Quota</h3>
+      <p>Jours max de prêt : ${quota.nbr_jours_max_prets}<br>
+         Livres max : ${livreMax}</p>
+
+      <h3>📌 Pénalités</h3>
+      ${penalites.length === 0 ? "<p>Aucune pénalité</p>" : `
+        <ul>
+          ${penalites.map(p => {
+                    const fin = new Date(p.date_action);
+                    fin.setDate(fin.getDate() + p.nbr_jours);
+                    return `<li>Action le ${p.date_action}, durée : ${p.nbr_jours} jours → Fin : ${fin.toISOString().split('T')[0]}</li>`;
+                }).join('')}
+        </ul>
+      `}
+
+      <h3>📚 Situation à la date</h3>
+      <p>Livres empruntés en cours : ${livresEmpruntes}<br>
+         Livres encore empruntables : ${livresRestants >= 0 ? livresRestants : 0}</p>
+    `;
+            } catch (error) {
+                resultContainer.innerHTML = `<p style="color:red;">${error.message}</p>`;
+            }
+        });
+
+    </script>
+</body>
+
+</html>

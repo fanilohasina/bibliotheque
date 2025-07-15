@@ -77,6 +77,10 @@ public class AdminController {
     public String home() {
         return "home";
     }
+    @GetMapping("home")
+    public String home2() {
+        return "home1";
+    }
 
     @GetMapping("prets/ajouter")
     public String afficherFormulairePret(@RequestParam(required = false) Integer idLivre,
